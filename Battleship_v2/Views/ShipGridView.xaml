@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="Battleship_v2.Views.ShipGridView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Battleship_v2.Views"
+             xmlns:viewmodels="clr-namespace:Battleship_v2.ViewModels"
+             d:DataContext ="viewmodels:ShipGridViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid
+            Name="dgSimple"
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding Grid}"
+            IsReadOnly="True"
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="False"
+            Margin="6">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header=" "
+                    Binding="{Binding RowNumber}"
+                    Width="0.5*" />
+                <DataGridTextColumn
+                    Header="A"
+                    Binding="{Binding Column_0}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="B"
+                    Binding="{Binding Column_1}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="C"
+                    Binding="{Binding Column_2}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="D"
+                    Binding="{Binding Column_3}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="E"
+                    Binding="{Binding Column_4}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="F"
+                    Binding="{Binding Column_5}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="G"
+                    Binding="{Binding Column_6}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="H"
+                    Binding="{Binding Column_7}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="I"
+                    Binding="{Binding Column_8}"
+                    Width="*" />
+                <DataGridTextColumn
+                    Header="J"
+                    Binding="{Binding Column_9}"
+                    Width="*" />
+            </DataGrid.Columns>
+
+            <DataGrid.CellStyle>
+                <Style
+                    TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger
+                            Property="IsSelected"
+                            Value="True">
+                            <Setter
+                                Property="Foreground"
+                                Value="Black" />
+                            <Setter
+                                Property="Background"
+                                Value="{x:Null}" />
+                            <Setter
+                                Property="BorderBrush"
+                                Value="{x:Null}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
+    </Grid>
+</UserControl>
