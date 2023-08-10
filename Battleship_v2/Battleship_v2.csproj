@@ -62,7 +62,6 @@
     <Compile Include="Items\ShipGridCell.cs" />
     <Compile Include="Items\ShipGridRow.cs" />
     <Compile Include="Model\ShipGridModel.cs" />
-    <Compile Include="Model\TargetFieldModel.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Ships\Submarine.cs" />
     <Compile Include="Ships\Destroyer.cs" />

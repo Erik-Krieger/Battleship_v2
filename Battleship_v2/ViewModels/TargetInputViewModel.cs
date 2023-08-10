@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows.Input;
 using Battleship_v2.Models;
 
@@ -15,16 +14,17 @@ namespace Battleship_v2.ViewModels
             get => m_TargetString;
             set
             {
-                SetField(ref m_TargetString, value);
+                SetField( ref m_TargetString, value );
             }
         }
 
-        public TargetInputViewModel() {}
+        public TargetInputViewModel() { }
 
-        public void CmdShootButtonPressed()
+        public void ShootButtonPressed()
         {
             TargetString = string.Empty;
             Debug.WriteLine( $"Value of TargetString: {TargetString}" );
+            m_ShipGridModel.ProcessShot( TargetString );
         }
 
         private ICommand m_CmdShoot;
@@ -32,7 +32,7 @@ namespace Battleship_v2.ViewModels
         {
             get
             {
-                return m_CmdShoot ?? ( m_CmdShoot = new CommandHandler( () => CmdShootButtonPressed(), () => CanExecute ) );
+                return m_CmdShoot ?? ( m_CmdShoot = new CommandHandler( () => ShootButtonPressed(), () => CanExecute ) );
             }
         }
         public bool CanExecute
