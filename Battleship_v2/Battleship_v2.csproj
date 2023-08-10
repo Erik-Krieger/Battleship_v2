@@ -69,6 +69,7 @@
     <Compile Include="Ships\Carrier.cs" />
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Ships\Ship.cs" />
+    <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\ShipGridViewModel.cs" />
     <Compile Include="ViewModels\TargetInputViewModel.cs" />
     <Compile Include="Views\GameView.xaml.cs">

@@ -35,7 +35,7 @@ namespace Battleship_v2.ViewModels
 
         public void SetCell( int theXPos, int theYPos, char theValue )
         {
-            if ( isInBounds( theXPos, theYPos ) )
+            if ( !isInBounds( theXPos, theYPos ) )
             {
                 return;
             }

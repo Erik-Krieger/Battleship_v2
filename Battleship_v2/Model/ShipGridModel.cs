@@ -32,6 +32,7 @@ namespace Battleship_v2.Models
             };
 
             placeShipsRandomly();
+            drawAllShips();
         }
 
         private void placeShipsRandomly()
@@ -55,6 +56,27 @@ namespace Battleship_v2.Models
                     aShip.SetShipValues(anXPos, anYPos, anOrientation, isReversed);
                 }
                 while (collidesWithAnotherShip(aShip));
+            }
+        }
+
+        private void drawAllShips()
+        {
+            foreach ( var aShip in m_Ships )
+            {
+                if ( aShip.IsHorizontal() )
+                {
+                    for ( int anIdx = 0; anIdx < aShip.Length; anIdx++ )
+                    {
+                        m_ViewModel.SetCell( aShip.XPos + anIdx, aShip.YPos, aShip.Letter );
+                    }
+                }
+                else
+                {
+                    for ( int anIdx = 0; anIdx < aShip.Length; anIdx++ )
+                    {
+                        m_ViewModel.SetCell( aShip.XPos, aShip.YPos + anIdx, aShip.Letter );
+                    }
+                }
             }
         }
 

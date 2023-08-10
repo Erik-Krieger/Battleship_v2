@@ -2,7 +2,7 @@
 
 namespace Battleship_v2.Items
 {
-    public class ShipGridRow
+    public class ShipGridRow : Data
     {
         private readonly ShipGridCell[] m_ShipGridRow = new ShipGridCell[10];
         private int m_RowNumber;

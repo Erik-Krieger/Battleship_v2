@@ -23,6 +23,7 @@ namespace Battleship_v2.Ships
         public int Length { get => m_Length; }
         public int XPos { get => m_XPos; }
         public int YPos { get => m_YPos; }
+        public char Letter { get => m_Letter; }
 
         public Ship( char theLetterRepresenation, int theLength )
         {
