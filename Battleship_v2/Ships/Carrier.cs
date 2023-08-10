@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Battleship_v2.Ships
 {
-    sealed public class Battleship : Ship
+    sealed public class Carrier : Ship
     {
-        const char LETTER = 'b';
-        const int LENGTH = 4;
+        const char LETTER = 'c';
+        const int LENGTH = 5;
 
-        public Battleship() : base(LETTER, LENGTH) { }
+        public Carrier() : base(LETTER, LENGTH) { }
     }
 }

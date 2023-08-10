@@ -10,6 +10,7 @@ namespace Battleship_v2.Ships
         private bool m_Reversed = false;
         private char m_Letter;
         private int m_Length;
+        private int m_HitCount = 0;
 
         public Ship( char theLetterRepresenation, int theLength )
         {
@@ -17,26 +18,43 @@ namespace Battleship_v2.Ships
             m_Length = theLength;
         }
 
-        private static bool isLegalPosition( int theXPos, int theYPos, int theLength, Orientation theOrientation)
+        private static bool isLegalPosition( int theXPos, int theYPos, int theLength, Orientation theOrientation )
         {
-            if ( theOrientation == Orientation.Horizontal)
+            if ( theOrientation == Orientation.Horizontal )
             {
-                return (theXPos >= 0 && theYPos + theLength < 10 && theYPos >= 0 && theYPos < 10);
+                return ( theXPos >= 0 && theYPos + theLength < 10 && theYPos >= 0 && theYPos < 10 );
             }
             else
             {
-                return (theXPos >= 0 && theXPos < 10 && theYPos >= 0 && theYPos + theLength < 10);
+                return ( theXPos >= 0 && theXPos < 10 && theYPos >= 0 && theYPos + theLength < 10 );
             }
         }
 
-        public bool IsHit(int theXPos, int theYPos)
+        public bool IsHit( int theXPos, int theYPos, bool isPlacementOnly = false )
         {
-            if ( isLegalPosition(theXPos, theYPos, m_Length, m_Orientation) )
+            if ( isLegalPosition( theXPos, theYPos, m_Length, m_Orientation ) )
             {
                 return false;
             }
 
-            return false;
+            if (!isPlacementOnly)
+            {
+                m_HitCount++;
+            }
+
+            if ( m_Orientation == Orientation.Horizontal )
+            {
+                return ( theXPos >= m_XPos && theXPos < m_XPos + m_Length && theYPos == m_YPos );
+            }
+            else
+            {
+                return ( theYPos >= m_YPos && theYPos < m_YPos + m_Length && theXPos == m_XPos );
+            }
+        }
+
+        public bool IsSunk()
+        {
+            return m_HitCount >= m_Length;
         }
     }
 }
