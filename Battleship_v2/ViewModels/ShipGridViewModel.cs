@@ -1,12 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Battleship_v2.Items;
+using Battleship_v2.Models;
 
 namespace Battleship_v2.ViewModels
 {
     public class ShipGridViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<ShipGridRow> m_Grid;
+        private ShipGridModel m_Model;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -18,19 +20,12 @@ namespace Battleship_v2.ViewModels
 
         public ShipGridViewModel()
         {
-            Grid = new ObservableCollection<ShipGridRow>()
+            Grid = new ObservableCollection<ShipGridRow>();
+
+            for (int anIdx = 0; anIdx < 10; anIdx++)
             {
-                new ShipGridRow(1),
-                new ShipGridRow(2),
-                new ShipGridRow(3),
-                new ShipGridRow(4),
-                new ShipGridRow(5),
-                new ShipGridRow(6),
-                new ShipGridRow(7),
-                new ShipGridRow(8),
-                new ShipGridRow(9),
-                new ShipGridRow(10)
-            };
+                Grid.Add(new ShipGridRow(anIdx + 1));
+            }
         }
 
         private bool isInBounds( int theXPos, int theYPos )

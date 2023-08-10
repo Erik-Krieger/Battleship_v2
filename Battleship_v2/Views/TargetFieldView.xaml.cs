@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Battleship_v2.ViewModels;
 
 namespace Battleship_v2.Views
 {
@@ -10,6 +11,7 @@ namespace Battleship_v2.Views
         public TargetFieldView()
         {
             InitializeComponent();
+            DataContext = new TargetInputViewModel();
         }
     }
 }

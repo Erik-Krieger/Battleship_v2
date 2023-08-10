@@ -18,7 +18,7 @@
             CanUserResizeRows="False"
             CanUserSortColumns="False"
             CanUserReorderColumns="False"
-            behaviours:DataGridBehaviour.DisplayRowNumber="True"
+            RowHeaderWidth="0"
             Margin="6">
             <DataGrid.Columns>
                 <DataGridTextColumn
