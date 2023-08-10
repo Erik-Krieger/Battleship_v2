@@ -57,7 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="EventHandler.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Items\ItemShipViewModel.cs" />
+    <Compile Include="Items\ShipGridRow_1.cs" />
     <Compile Include="Items\ShipGridCell.cs" />
     <Compile Include="Models\ShipGridModel.cs" />
     <Compile Include="Ships\Battleship.cs" />
@@ -65,6 +65,9 @@
     <Compile Include="ViewModels\ShipGridViewModel.cs" />
     <Compile Include="Views\ShipGridView.xaml.cs">
       <DependentUpon>ShipGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TargetFieldView.xaml.cs">
+      <DependentUpon>TargetFieldView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -79,6 +82,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ShipGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TargetFieldView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

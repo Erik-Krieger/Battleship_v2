@@ -8,6 +8,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <views:ShipGridView />
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="1*" />
+            <RowDefinition
+                Height="10*" />
+            <RowDefinition
+                Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="1*" />
+                <ColumnDefinition
+                    Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="0"
+                Content="Your Map" />
+            <Label
+                Grid.Column="1"
+                Content="Enemy Map" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <views:ShipGridView
+                Grid.Column="0" />
+            <views:ShipGridView
+                Grid.Column="1" />
+        </Grid>
+
+        <views:TargetFieldView Grid.Row="2" />
     </Grid>
 </Window>

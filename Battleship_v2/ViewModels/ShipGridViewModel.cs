@@ -6,11 +6,11 @@ namespace Battleship_v2.ViewModels
 {
     public class ShipGridViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ItemShipViewModel> m_Grid;
+        private ObservableCollection<ShipGridRow> m_Grid;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<ItemShipViewModel> Grid
+        public ObservableCollection<ShipGridRow> Grid
         {
             get => m_Grid;
             private set => m_Grid = value;
@@ -18,18 +18,18 @@ namespace Battleship_v2.ViewModels
 
         public ShipGridViewModel()
         {
-            Grid = new ObservableCollection<ItemShipViewModel>()
+            Grid = new ObservableCollection<ShipGridRow>()
             {
-                new ItemShipViewModel(1),
-                new ItemShipViewModel(2),
-                new ItemShipViewModel(3),
-                new ItemShipViewModel(4),
-                new ItemShipViewModel(5),
-                new ItemShipViewModel(6),
-                new ItemShipViewModel(7),
-                new ItemShipViewModel(8),
-                new ItemShipViewModel(9),
-                new ItemShipViewModel(10)
+                new ShipGridRow(1),
+                new ShipGridRow(2),
+                new ShipGridRow(3),
+                new ShipGridRow(4),
+                new ShipGridRow(5),
+                new ShipGridRow(6),
+                new ShipGridRow(7),
+                new ShipGridRow(8),
+                new ShipGridRow(9),
+                new ShipGridRow(10)
             };
         }
 

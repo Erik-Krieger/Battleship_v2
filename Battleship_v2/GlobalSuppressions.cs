@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage( "Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "namespace", Target = "~M:Battleship_v2" )]
+[assembly: SuppressMessage( "Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "module", Target = "~M:Battleship_v2" )]
