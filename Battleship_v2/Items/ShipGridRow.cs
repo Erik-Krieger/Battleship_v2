@@ -1,4 +1,6 @@
-﻿namespace Battleship_v2.Items
+﻿using System.Data;
+
+namespace Battleship_v2.Items
 {
     public class ShipGridRow
     {
@@ -31,19 +33,11 @@
         {
             m_RowNumber = theRowNumber;
 
-            m_ShipGridRow = new ShipGridCell[]
+            m_ShipGridRow = new ShipGridCell[10];
+            for ( int anIdx = 0; anIdx < 10; anIdx++ )
             {
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell(),
-                new ShipGridCell()
-            };
+                m_ShipGridRow[anIdx] = new ShipGridCell();
+            }
         }
 
         private bool isInBounds( int theColumnNumber )
