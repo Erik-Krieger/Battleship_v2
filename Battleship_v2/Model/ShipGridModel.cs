@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using Battleship_v2.Ships;
 using Battleship_v2.ViewModels;
@@ -18,8 +20,84 @@ namespace Battleship_v2.Models
             m_Ships = new List<Ship>()
             {
                 new Carrier(),
-
+                new Battleship(),
+                new Battleship(),
+                new Destroyer(),
+                new Destroyer(),
+                new Submarine(),
+                new Submarine(),
+                new PatrolBoat(),
+                new PatrolBoat(),
+                new PatrolBoat()
             };
+
+            placeShipsRandomly();
+        }
+
+        private void placeShipsRandomly()
+        {
+            Random aRng = new Random();
+
+            foreach (var aShip in m_Ships)
+            {
+                do
+                {
+                    int anXPos = aRng.Next( 0, 10 - aShip.Length );
+                    int anYPos = aRng.Next( 0, 10 );
+                    var anOrientation = aRng.Next() % 2 == 0 ? Orientation.Horizontal : Orientation.Vertical;
+                    bool isReversed = aRng.Next() % 2 == 0;
+
+                    if ( anOrientation == Orientation.Vertical )
+                    {
+                        (anXPos, anYPos) = (anYPos, anXPos);
+                    }
+
+                    aShip.SetShipValues(anXPos, anYPos, anOrientation, isReversed);
+                }
+                while (collidesWithAnotherShip(aShip));
+            }
+        }
+
+        private bool collidesWithAnotherShip(Ship theShip)
+        {
+            bool isColliding = false;
+            
+            foreach (var aShip in m_Ships)
+            {
+                // Skip the Iteration, when comparing against itself.
+                if (aShip == theShip)
+                {
+                    continue;
+                }
+
+                if (aShip.NotPlaced())
+                {
+                    break;
+                }
+
+                if (theShip.IsHorizontal())
+                {
+                    for (int anIdx = 0; anIdx < theShip.Length; anIdx++ )
+                    {
+                        if (aShip.IsHit(theShip.XPos + anIdx, theShip.YPos, true))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int anIdx = 0; anIdx < theShip.Length; anIdx++ )
+                    {
+                        if (aShip.IsHit(theShip.XPos, theShip.YPos + anIdx, true))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return isColliding;
         }
 
         public bool ProcessShot( string theInputString )

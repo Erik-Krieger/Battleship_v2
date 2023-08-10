@@ -2,6 +2,14 @@
 
 namespace Battleship_v2.Ships
 {
+    public struct ShipValues
+    {
+        public int xPos;
+        public int yPos;
+        public Orientation orientation;
+        public bool reversed;
+    };
+
     public abstract class Ship
     {
         private int m_XPos = -1;
@@ -12,10 +20,22 @@ namespace Battleship_v2.Ships
         private int m_Length;
         private int m_HitCount = 0;
 
+        public int Length { get => m_Length; }
+        public int XPos { get => m_XPos; }
+        public int YPos { get => m_YPos; }
+
         public Ship( char theLetterRepresenation, int theLength )
         {
             m_Letter = theLetterRepresenation;
             m_Length = theLength;
+        }
+
+        public void SetShipValues(int theXPos, int theYPos, Orientation theOrientation, bool isReversed)
+        {
+            m_XPos = theXPos;
+            m_YPos = theYPos;
+            m_Orientation = theOrientation;
+            m_Reversed = isReversed;
         }
 
         private static bool isLegalPosition( int theXPos, int theYPos, int theLength, Orientation theOrientation )
@@ -55,6 +75,16 @@ namespace Battleship_v2.Ships
         public bool IsSunk()
         {
             return m_HitCount >= m_Length;
+        }
+
+        public bool IsHorizontal()
+        {
+            return m_Orientation == Orientation.Horizontal;
+        }
+
+        public bool NotPlaced()
+        {
+            return (m_XPos < 0 || m_YPos < 0);
         }
     }
 }
