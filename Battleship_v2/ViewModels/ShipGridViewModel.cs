@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using Battleship_v2.Items;
 using Battleship_v2.Models;
 
@@ -7,24 +8,29 @@ namespace Battleship_v2.ViewModels
 {
     public class ShipGridViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ShipGridRow> m_Grid;
         private ShipGridModel m_Model;
+
+        public DataTable Grid;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<ShipGridRow> Grid
-        {
-            get => m_Grid;
-            private set => m_Grid = value;
-        }
-
         public ShipGridViewModel()
         {
-            Grid = new ObservableCollection<ShipGridRow>();
+            Grid = new DataTable();
+            char theColumnLetter = 'A';
 
             for (int anIdx = 0; anIdx < 10; anIdx++)
             {
-                Grid.Add(new ShipGridRow(anIdx + 1));
+                Grid.Columns.Add( new DataColumn( $"{theColumnLetter++}" ) );
+                Grid.Rows.Add();
+            }
+
+            for (int anIdx = 0; anIdx < 10; anIdx++)
+            {
+                for (int anJdx = 0; anJdx < 10; anJdx++)
+                {
+                    Grid[0][0];
+                }
             }
         }
 
@@ -40,7 +46,7 @@ namespace Battleship_v2.ViewModels
                 return;
             }
 
-            m_Grid[theYPos].SetColumn( theXPos, theValue );
+            //m_Grid[theYPos].SetColumn( theXPos, theValue );
         }
 
         public char GetCell( int theXPos, int theYPos )
@@ -50,7 +56,8 @@ namespace Battleship_v2.ViewModels
                 return '\0';
             }
 
-            return m_Grid[theYPos].GetColumn( theXPos );
+            //return m_Grid[theYPos].GetColumn( theXPos );
+            return '\0';
         }
     }
 }

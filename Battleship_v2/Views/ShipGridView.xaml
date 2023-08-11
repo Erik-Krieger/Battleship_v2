@@ -11,7 +11,7 @@
     <Grid>
         <DataGrid
             Name="dgSimple"
-            AutoGenerateColumns="False"
+            AutoGenerateColumns="True"
             ItemsSource="{Binding Grid}"
             IsReadOnly="True"
             CanUserResizeColumns="False"
@@ -20,52 +20,6 @@
             CanUserReorderColumns="False"
             RowHeaderWidth="0"
             Margin="6">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Header=" "
-                    Binding="{Binding RowNumber}"
-                    Width="0.5*" />
-                <DataGridTextColumn
-                    Header="A"
-                    Binding="{Binding Column_0}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="B"
-                    Binding="{Binding Column_1}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="C"
-                    Binding="{Binding Column_2}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="D"
-                    Binding="{Binding Column_3}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="E"
-                    Binding="{Binding Column_4}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="F"
-                    Binding="{Binding Column_5}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="G"
-                    Binding="{Binding Column_6}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="H"
-                    Binding="{Binding Column_7}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="I"
-                    Binding="{Binding Column_8}"
-                    Width="*" />
-                <DataGridTextColumn
-                    Header="J"
-                    Binding="{Binding Column_9}"
-                    Width="*" />
-            </DataGrid.Columns>
 
             <DataGrid.CellStyle>
                 <Style
