@@ -1,37 +1,72 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
-using Battleship_v2.Items;
 using Battleship_v2.Models;
 
 namespace Battleship_v2.ViewModels
 {
-    public class ShipGridViewModel : INotifyPropertyChanged
+    public class ShipGridViewModel : Data
     {
         private ShipGridModel m_Model;
 
-        public DataTable Grid;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private DataTable m_Grid;
+        public DataTable Grid
+        {
+            get
+            {
+                return m_Grid;
+            }
+            set
+            {
+                m_Grid = value;
+                NotifyPropertyChanged( nameof( Grid ) );
+            }
+        }
 
         public ShipGridViewModel()
         {
+            m_Model = new ShipGridModel(this);
             Grid = new DataTable();
+
             char theColumnLetter = 'A';
 
-            for (int anIdx = 0; anIdx < 10; anIdx++)
+            // Generate Columns
+            for ( int anIdx = 0; anIdx < 11; anIdx++ )
             {
-                Grid.Columns.Add( new DataColumn( $"{theColumnLetter++}" ) );
-                Grid.Rows.Add();
+                var aCol = new DataColumn();
+
+                if ( anIdx == 0 )
+                {
+                    aCol.ColumnName = "#";
+                    aCol.AutoIncrement = true;
+                    aCol.AutoIncrementSeed = 1;
+                }
+                else
+                {
+                    aCol.ColumnName = $"{theColumnLetter++}";
+                    aCol.DefaultValue = "w";
+                }
+                Grid.Columns.Add( aCol );
             }
 
-            for (int anIdx = 0; anIdx < 10; anIdx++)
+            // Generate Rows
+            for (int anIdx = 0; anIdx < 10; anIdx++ )
             {
-                for (int anJdx = 0; anJdx < 10; anJdx++)
+                DataRow aRow = Grid.NewRow();
+                Grid.Rows.Add( aRow );
+            }
+
+            // Fill the Grid
+            for ( int anYPos = 0; anYPos < 10; anYPos++ )
+            {
+                var aRow = Grid.Rows[anYPos];
+                for ( int anXPos = 1; anXPos <= 10; anXPos++ )
                 {
-                    Grid[0][0];
+                    var aCol = Grid.Columns[anXPos];
+                    aRow[aCol] = "w";
                 }
             }
+
+            m_Model.DrawAllShips();
         }
 
         private bool isInBounds( int theXPos, int theYPos )
@@ -41,12 +76,17 @@ namespace Battleship_v2.ViewModels
 
         public void SetCell( int theXPos, int theYPos, char theValue )
         {
+            // We need to increment here, since Column zero contains the row number
+            // and when we say theXPos = 0, we refer to the first column of the playing field.
+            theXPos++;
+
             if ( !isInBounds( theXPos, theYPos ) )
             {
                 return;
             }
 
-            //m_Grid[theYPos].SetColumn( theXPos, theValue );
+            var aRow= m_Grid.Rows[theYPos];
+            aRow[m_Grid.Columns[theXPos]] = $"{theValue}";
         }
 
         public char GetCell( int theXPos, int theYPos )
@@ -56,8 +96,10 @@ namespace Battleship_v2.ViewModels
                 return '\0';
             }
 
-            //return m_Grid[theYPos].GetColumn( theXPos );
-            return '\0';
+            var aRow = m_Grid.Rows[theYPos];
+            var aCell = aRow[m_Grid.Columns[theXPos]];
+            var aCellData = (string)aCell;
+            return aCellData[0];
         }
     }
 }

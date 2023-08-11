@@ -8,14 +8,14 @@ namespace Battleship_v2
     {
         // boiler-plate
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged( string thePropertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( thePropertyName ) );
+        protected void NotifyPropertyChanged( string thePropertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( thePropertyName ) );
 
         protected bool SetField<T>( ref T theField, T theValue, [CallerMemberName] string thePropertyName = null )
         {
             if ( EqualityComparer<T>.Default.Equals( theField, theValue ) ) return false;
 
             theField = theValue;
-            OnPropertyChanged( thePropertyName );
+            NotifyPropertyChanged( thePropertyName );
             return true;
         }
 

@@ -32,7 +32,6 @@ namespace Battleship_v2.Models
             };
 
             placeShipsRandomly();
-            drawAllShips();
         }
 
         private void placeShipsRandomly()
@@ -59,7 +58,7 @@ namespace Battleship_v2.Models
             }
         }
 
-        private void drawAllShips()
+        public void DrawAllShips()
         {
             foreach ( var aShip in m_Ships )
             {
