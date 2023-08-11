@@ -28,7 +28,7 @@ namespace Battleship_v2.ViewModels
         }
 
         private ICommand m_CmdShoot;
-        public ICommand CmdShoot
+        public ICommand CmdShoot 
         {
             get
             {

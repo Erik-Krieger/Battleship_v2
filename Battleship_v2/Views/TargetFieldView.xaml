@@ -27,7 +27,7 @@
 
         <TextBox
             Grid.Column="0"
-            Text="{Binding TargetString, Mode=TwoWay}"/>
+            Text="{Binding TargetString}"/>
         <Button
             Grid.Column="1"
             Content="Shoot"
