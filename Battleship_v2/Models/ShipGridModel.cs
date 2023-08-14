@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Windows.Controls;
 using Battleship_v2.Services;
+using Battleship_v2.Utility;
 using Battleship_v2.ViewModels;
 
 namespace Battleship_v2.Models

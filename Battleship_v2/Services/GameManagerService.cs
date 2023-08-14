@@ -32,6 +32,11 @@ namespace Battleship_v2.Services
 
         private void init()
         {
+            if (m_Ships != null)
+            {
+                return;
+            }
+
             m_Ships = new List<Ship>()
             {
                 new Carrier(),
@@ -177,10 +182,6 @@ namespace Battleship_v2.Services
 
         public void ProcessShot( string theTargetString )
         {
-            init();
-            //DrawAllShips();
-            //return;
-
             if ( !tryGetPosition( theTargetString, out (int, int) thePosition ) )
             {
                 // Maybe raise exception here.
@@ -216,6 +217,8 @@ namespace Battleship_v2.Services
 
         public void DrawAllShips()
         {
+            init();
+
             foreach ( var aShip in m_Ships )
             {
                 drawShip(aShip);

@@ -45,11 +45,6 @@ namespace Battleship_v2.Ships
 
         public bool IsHit( int theXPos, int theYPos, bool isPlacementOnly = false )
         {
-            if ( isLegalPosition( theXPos, theYPos, m_Length, m_Orientation ) )
-            {
-                return false;
-            }
-
             if (!isPlacementOnly)
             {
                 m_HitCount++;

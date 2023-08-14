@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utility\AutoIndexingDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -70,11 +73,15 @@
     <Compile Include="Ships\Carrier.cs" />
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Ships\Ship.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\ShipGridViewModel.cs" />
     <Compile Include="ViewModels\TargetInputViewModel.cs" />
     <Compile Include="Views\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShipGridView.xaml.cs">
       <DependentUpon>ShipGridView.xaml</DependentUpon>
@@ -95,6 +102,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\GameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

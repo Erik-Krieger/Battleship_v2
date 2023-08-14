@@ -15,7 +15,9 @@ namespace Battleship_v2.ViewModels
             get => m_TargetString;
             set
             {
-                SetProperty( ref m_TargetString, value );
+                //SetProperty( ref m_TargetString, value );
+                m_TargetString = value;
+                NotifyPropertyChanged(nameof(TargetString));
             }
         }
 
@@ -24,13 +26,8 @@ namespace Battleship_v2.ViewModels
             Model = new TargetInputModel(this);
         }
 
-        public void ShootButtonPressed()
-        {
-            
-        }
-
-        private ICommand m_CmdShoot;
         public ICommand CmdShoot { get => m_CmdShoot ?? (m_CmdShoot = new CommandHandler( () => Model.ShootButtonPressed(), () => CanExecute ) ); }
+        private ICommand m_CmdShoot;
 
         public bool CanExecute { get => true; }
     }

@@ -36,7 +36,7 @@
 
         <TextBox
             Grid.Column="0"
-            Text="{Binding TargetString}"/>
+            Text="{Binding TargetString, UpdateSourceTrigger=PropertyChanged}"/>
         <Button
             Grid.Column="1"
             Content="Shoot"
