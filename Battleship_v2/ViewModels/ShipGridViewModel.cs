@@ -1,14 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Data;
 using Battleship_v2.Models;
+using Battleship_v2.Services;
 
 namespace Battleship_v2.ViewModels
 {
     public class ShipGridViewModel : Data
     {
         private ShipGridModel m_Model;
-
+        private GameManagerService m_GameManager;
         private DataTable m_Grid;
+
         public DataTable Grid
         {
             get
@@ -24,7 +26,10 @@ namespace Battleship_v2.ViewModels
 
         public ShipGridViewModel()
         {
-            m_Model = new ShipGridModel(this);
+            //m_Model = new ShipGridModel(this);
+            m_GameManager = GameManagerService.Instance;
+            m_GameManager.InjectShipGridViewModel( this );
+
             Grid = new DataTable();
 
             char theColumnLetter = 'A';
@@ -65,25 +70,27 @@ namespace Battleship_v2.ViewModels
                     aRow[aCol] = "w";
                 }
             }
-
-            m_Model.DrawAllShips();
         }
 
         private bool isInBounds( int theXPos, int theYPos )
         {
+            // In case a change breaks hitting any shot in the last column, it's probably due this line.
+            // The X-Position bounds check might need to be adjusted. At the moment we're pretending that the first column i.e.
+            // the one containing the row number, does not exist. This might not always be possible in the future.
+            // Should that be the case, change the bounds check for "theXPos" to the range [1,10] or [1,11).
             return ( theXPos >= 0 && theXPos <= 9 && theYPos >= 0 && theYPos <= 9 );
         }
 
         public void SetCell( int theXPos, int theYPos, char theValue )
         {
-            // We need to increment here, since Column zero contains the row number
-            // and when we say theXPos = 0, we refer to the first column of the playing field.
-            theXPos++;
-
             if ( !isInBounds( theXPos, theYPos ) )
             {
                 return;
             }
+
+            // We need to increment here, since Column zero contains the row number
+            // and when we say theXPos = 0, we refer to the first column of the playing field.
+            theXPos++;
 
             var aRow= m_Grid.Rows[theYPos];
             aRow[m_Grid.Columns[theXPos]] = $"{theValue}";

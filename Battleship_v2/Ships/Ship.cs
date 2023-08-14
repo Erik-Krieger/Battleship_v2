@@ -2,14 +2,6 @@
 
 namespace Battleship_v2.Ships
 {
-    public struct ShipValues
-    {
-        public int xPos;
-        public int yPos;
-        public Orientation orientation;
-        public bool reversed;
-    };
-
     public abstract class Ship
     {
         private int m_XPos = -1;

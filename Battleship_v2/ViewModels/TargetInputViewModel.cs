@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Windows.Input;
 using Battleship_v2.Models;
+using Battleship_v2.Services;
 
 namespace Battleship_v2.ViewModels
 {
     public class TargetInputViewModel : Data
     {
         private string m_TargetString = string.Empty;
-        private ShipGridModel m_ShipGridModel;
+        private GameManagerService m_GameManager;
 
         public string TargetString
         {
@@ -18,13 +19,17 @@ namespace Battleship_v2.ViewModels
             }
         }
 
-        public TargetInputViewModel() { }
+        public TargetInputViewModel()
+        {
+            m_GameManager = GameManagerService.Instance;
+            m_GameManager.InjectTargetInputViewModel( this );
+        }
 
         public void ShootButtonPressed()
         {
-            TargetString = string.Empty;
             Debug.WriteLine( $"Value of TargetString: {TargetString}" );
-            m_ShipGridModel.ProcessShot( TargetString );
+            m_GameManager.ProcessShot( TargetString );
+            TargetString = string.Empty;
         }
 
         private ICommand m_CmdShoot;
@@ -38,11 +43,6 @@ namespace Battleship_v2.ViewModels
         public bool CanExecute
         {
             get => true;
-        }
-
-        public void InjectModel( ShipGridModel theShipGridModel )
-        {
-            m_ShipGridModel = theShipGridModel;
         }
     }
 }

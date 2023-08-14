@@ -63,7 +63,7 @@
     <Compile Include="Items\ShipGridRow.cs" />
     <Compile Include="Model\ShipGridModel.cs" />
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="Services\ShotManagerService.cs" />
+    <Compile Include="Services\GameManagerService.cs" />
     <Compile Include="Ships\Submarine.cs" />
     <Compile Include="Ships\Destroyer.cs" />
     <Compile Include="Ships\PatrolBoat.cs" />
@@ -125,6 +125,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
