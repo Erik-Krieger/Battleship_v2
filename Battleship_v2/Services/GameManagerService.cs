@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using Battleship_v2.Models;
 using Battleship_v2.Ships;
 using Battleship_v2.ViewModels;
 
@@ -8,24 +9,22 @@ namespace Battleship_v2.Services
 {
     public class GameManagerService
     {
-        public const int GridSize = 10;
+        public const int GRID_SIZE = 10;
 
-        private ShipGridViewModel m_ShipGrid;
-        private TargetInputViewModel m_TargetInput;
+        private ShipGridModel m_ShipGrid;
+        private TargetInputModel m_TargetInput;
         private List<Ship> m_Ships;
 
-        public bool InjectShipGridViewModel( ShipGridViewModel theViewModel )
+        public GameManagerService InjectShipGridModel( ShipGridModel theModel )
         {
-            bool wasReplaced = m_ShipGrid != null;
-            m_ShipGrid = theViewModel;
-            return wasReplaced;
+            m_ShipGrid = theModel;
+            return this;
         }
 
-        public bool InjectTargetInputViewModel( TargetInputViewModel theViewModel )
+        public GameManagerService InjectTargetInputModel( TargetInputModel theModel )
         {
-            bool wasReplaced = m_TargetInput != null;
-            m_TargetInput = theViewModel;
-            return wasReplaced;
+            m_TargetInput = theModel;
+            return this;
         }
 
         public static GameManagerService Instance { get; private set; } = new GameManagerService();
@@ -153,7 +152,7 @@ namespace Battleship_v2.Services
 
         private bool isValidPosition( (int, int) thePosition )
         {
-            return ( thePosition.Item1 >= 0 && thePosition.Item1 < GridSize && thePosition.Item2 >= 0 && thePosition.Item2 < GridSize );
+            return ( thePosition.Item1 >= 0 && thePosition.Item1 < ShipGridModel.GRID_SIZE && thePosition.Item2 >= 0 && thePosition.Item2 < ShipGridModel.GRID_SIZE );
         }
 
         private void drawShip(Ship aShip)

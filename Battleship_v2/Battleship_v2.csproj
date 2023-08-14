@@ -55,14 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommandHandler.cs" />
-    <Compile Include="Data.cs" />
-    <Compile Include="Field.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Items\ShipGridCell.cs" />
-    <Compile Include="Items\ShipGridRow.cs" />
-    <Compile Include="Model\ShipGridModel.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Utility\AutoIndexingDataTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\CommandHandler.cs" />
+    <Compile Include="Models\TargetInputModel.cs" />
+    <Compile Include="Utility\PropertyChangeHandler.cs" />
+    <Compile Include="Models\ShipGridModel.cs" />
+    <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="Services\GameManagerService.cs" />
     <Compile Include="Ships\Submarine.cs" />
     <Compile Include="Ships\Destroyer.cs" />
