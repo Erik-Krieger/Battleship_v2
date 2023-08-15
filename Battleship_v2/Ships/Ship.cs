@@ -16,6 +16,7 @@ namespace Battleship_v2.Ships
         public int XPos { get => m_XPos; }
         public int YPos { get => m_YPos; }
         public char Letter { get => m_Letter; }
+        public int HitCount { get => m_HitCount ; private set => m_HitCount = value; }
 
         public Ship( char theLetterRepresenation, int theLength )
         {
@@ -45,19 +46,22 @@ namespace Battleship_v2.Ships
 
         public bool IsHit( int theXPos, int theYPos, bool isPlacementOnly = false )
         {
-            if (!isPlacementOnly)
+            bool isHit = false;
+            if ( m_Orientation == Orientation.Horizontal )
+            {
+                isHit = ( theXPos >= m_XPos && theXPos < m_XPos + m_Length && theYPos == m_YPos );
+            }
+            else
+            {
+                isHit = ( theYPos >= m_YPos && theYPos < m_YPos + m_Length && theXPos == m_XPos );
+            }
+
+            if ( !isPlacementOnly && isHit )
             {
                 m_HitCount++;
             }
 
-            if ( m_Orientation == Orientation.Horizontal )
-            {
-                return ( theXPos >= m_XPos && theXPos < m_XPos + m_Length && theYPos == m_YPos );
-            }
-            else
-            {
-                return ( theYPos >= m_YPos && theYPos < m_YPos + m_Length && theXPos == m_XPos );
-            }
+            return isHit;
         }
 
         public bool IsSunk()

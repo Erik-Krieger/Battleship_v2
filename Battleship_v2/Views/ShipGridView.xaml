@@ -19,7 +19,8 @@
             CanUserSortColumns="False"
             CanUserReorderColumns="False"
             RowHeaderWidth="0"
-            Margin="6">
+            Margin="6"
+            SelectedIndex="{Binding SelectedRow}">
 
             <DataGrid.CellStyle>
                 <Style

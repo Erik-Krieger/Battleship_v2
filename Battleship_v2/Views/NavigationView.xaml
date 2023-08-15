@@ -21,7 +21,8 @@
             DataType="{x:Type viewmodels:SingleplayerSetupViewModel}">
             <local:SingleplayerSetupView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:MultiplayerSetupViewModel}">
+        <DataTemplate
+            DataType="{x:Type viewmodels:MultiplayerSetupViewModel}">
             <local:MultiplayerSetupView />
         </DataTemplate>
     </UserControl.Resources>

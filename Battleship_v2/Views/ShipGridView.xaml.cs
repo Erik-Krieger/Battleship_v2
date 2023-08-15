@@ -12,7 +12,7 @@ namespace Battleship_v2.Views
         {
             InitializeComponent();
 
-            DataContext = new ShipGridViewModel();
+            //DataContext = new ShipGridViewModel();
         }
     }
 }

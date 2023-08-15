@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,11 +56,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enemy\Enemy.cs" />
+    <Compile Include="Enemy\EnemyEasy.cs" />
+    <Compile Include="Enemy\EnemyMedium.cs" />
+    <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utility\CommandHandler.cs" />
     <Compile Include="Models\TargetInputModel.cs" />
+    <Compile Include="Utility\Move.cs" />
     <Compile Include="Utility\PropertyChangeHandler.cs" />
     <Compile Include="Models\ShipGridModel.cs" />
     <Compile Include="Utility\RelayCommand.cs" />

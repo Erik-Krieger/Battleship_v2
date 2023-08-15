@@ -11,7 +11,6 @@ namespace Battleship_v2.Views
         public TargetFieldView()
         {
             InitializeComponent();
-            DataContext = new TargetInputViewModel();
         }
     }
 }

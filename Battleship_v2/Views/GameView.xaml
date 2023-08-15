@@ -4,10 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Battleship_v2.Views"
+             xmlns:viewmodels="clr-namespace:Battleship_v2.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:Background="DarkCyan">
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate
+            DataType="{x:Type viewmodels:ShipGridViewModel}">
+            <local:ShipGridView />
+        </DataTemplate>
+        <DataTemplate
+            DataType="{x:Type viewmodels:TargetInputViewModel}">
+            <local:TargetFieldView />
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="1*" />
@@ -35,6 +47,7 @@
 
         <Grid
             Grid.Row="1">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
                     Width="*" />
@@ -42,13 +55,26 @@
                     Width="*" />
             </Grid.ColumnDefinitions>
 
-            <local:ShipGridView
-                Grid.Column="0" />
-            <local:ShipGridView
-                Grid.Column="1" />
+            <DockPanel
+                Grid.Column="0">
+                <ContentControl
+                    DockPanel.Dock="Right"
+                    Content="{Binding OwnGrid}" />
+            </DockPanel>
+
+            <DockPanel
+                Grid.Column="1">
+                <ContentControl
+                    DockPanel.Dock="Right"
+                    Content="{Binding EnemyGrid}" />
+            </DockPanel>
+
         </Grid>
 
-        <local:TargetFieldView
-            Grid.Row="2" />
+        <DockPanel Grid.Row="2">
+            <ContentControl
+                DockPanel.Dock="Right"
+                Content="{Binding TargetInput}" />
+        </DockPanel>
     </Grid>
 </UserControl>

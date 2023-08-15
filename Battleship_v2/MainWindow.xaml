@@ -10,8 +10,7 @@
     mc:Ignorable="d"
     Title="MainWindow"
     Height="450"
-    Width="800"
-    Background="#041C32">
+    Width="800">
 
     <views:NavigationView />
 
