@@ -70,10 +70,12 @@
     <Compile Include="Ships\Carrier.cs" />
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Ships\Ship.cs" />
+    <Compile Include="ViewModels\MultiplayerSetupViewModel.cs" />
     <Compile Include="ViewModels\NavigationViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\ShipGridViewModel.cs" />
+    <Compile Include="ViewModels\SingleplayerSetupViewModel.cs" />
     <Compile Include="ViewModels\TargetInputViewModel.cs" />
     <Compile Include="Views\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
@@ -81,8 +83,17 @@
     <Compile Include="Views\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MultiplayerSetupView.xaml.cs">
+      <DependentUpon>MultiplayerSetupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NavigationView.xaml.cs">
+      <DependentUpon>NavigationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShipGridView.xaml.cs">
       <DependentUpon>ShipGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SingleplayerSetupView.xaml.cs">
+      <DependentUpon>SingleplayerSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TargetFieldView.xaml.cs">
       <DependentUpon>TargetFieldView.xaml</DependentUpon>
@@ -107,7 +118,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MultiplayerSetupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShipGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SingleplayerSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

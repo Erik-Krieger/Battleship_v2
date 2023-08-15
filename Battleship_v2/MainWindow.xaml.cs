@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Battleship_v2.ViewModels;
 
 namespace Battleship_v2
 {
@@ -11,9 +10,6 @@ namespace Battleship_v2
         public MainWindow()
         {
             InitializeComponent();
-            var aViewModel = new NavigationViewModel();
-            aViewModel.SelectedViewModel = new MainMenuViewModel( aViewModel );
-            DataContext = aViewModel;
         }
     }
 }

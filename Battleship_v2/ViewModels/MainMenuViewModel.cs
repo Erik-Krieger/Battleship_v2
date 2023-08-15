@@ -13,8 +13,6 @@ namespace Battleship_v2.ViewModels
             m_NavigationViewModel = theNavigationViewModel;
         }
 
-        public MainMenuViewModel() { }
-
         public Action Close { get; set; }
 
         public ICommand CmdSingleplayer
@@ -37,12 +35,12 @@ namespace Battleship_v2.ViewModels
 
         private void openSingleplayer( object theObject = null )
         {
-            m_NavigationViewModel.SelectedViewModel = new ShipGridViewModel();
+            m_NavigationViewModel.SelectedViewModel = new SingleplayerSetupViewModel(m_NavigationViewModel);
         }
 
         private void openMultiplayer( object theObject = null )
         {
-            m_NavigationViewModel.SelectedViewModel = new ShipGridViewModel();
+            m_NavigationViewModel.SelectedViewModel = new MultiplayerSetupViewModel(m_NavigationViewModel);
         }
     }
 }

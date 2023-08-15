@@ -4,6 +4,8 @@ namespace Battleship_v2.ViewModels
 {
     public class GameViewModel : PropertyChangeHandler
     {
+        private NavigationViewModel m_NavigationViewModel;
+
         public ShipGridViewModel OwnGrid { get; set; }
         private ShipGridViewModel m_OwnGrid;
 
@@ -13,9 +15,9 @@ namespace Battleship_v2.ViewModels
         public TargetInputViewModel TargetInput { get; set; }
         private TargetInputViewModel m_TargetInput;
 
-        public GameViewModel()
+        public GameViewModel(NavigationViewModel theNavigationViewModel)
         {
-
+            m_NavigationViewModel = theNavigationViewModel;
         }
     }
 }
