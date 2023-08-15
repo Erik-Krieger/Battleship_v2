@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Battleship_v2
+namespace Battleship_v2.Utility
 {
     /// <summary>
     /// A command whose sole purpose is to 

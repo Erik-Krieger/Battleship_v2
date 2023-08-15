@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Battleship_v2
+namespace Battleship_v2.Utility
 {
     public class CommandHandler : ICommand
     {

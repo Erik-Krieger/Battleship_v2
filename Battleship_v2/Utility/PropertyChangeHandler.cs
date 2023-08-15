@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Battleship_v2
+namespace Battleship_v2.Utility
 {
     public class PropertyChangeHandler : INotifyPropertyChanged
     {
