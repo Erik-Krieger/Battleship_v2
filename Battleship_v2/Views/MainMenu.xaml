@@ -19,15 +19,15 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" Grid.Row="1" Margin="10" Content="Singleplayer"/>
-        <Button Grid.Column="1" Grid.Row="2" Margin="10" Content="Multiplayer"/>
-        <Button Grid.Column="1" Grid.Row="3" Margin="10" Content="Exit" Click="CloseButtonClicked"/>
+        <Button Grid.Column="1" Grid.Row="1" Margin="10" Content="Singleplayer" Command="{Binding CmdSingleplayer}"/>
+        <Button Grid.Column="1" Grid.Row="2" Margin="10" Content="Multiplayer" Command="{Binding CmdMultiplayer}"/>
+        <Button Grid.Column="1" Grid.Row="3" Margin="10" Content="Exit" Command="{Binding CmdClose}"/>
     </Grid>
 </UserControl>

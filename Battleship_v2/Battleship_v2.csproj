@@ -58,9 +58,6 @@
     <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
-    <Compile Include="Utility\AutoIndexingDataTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Utility\CommandHandler.cs" />
     <Compile Include="Models\TargetInputModel.cs" />
     <Compile Include="Utility\PropertyChangeHandler.cs" />
