@@ -21,8 +21,6 @@ namespace Battleship_v2.Models
 
         public void ShootButtonPressed()
         {
-            GameManagerService.Instance.DrawAllShips();
-            return;
             GameManagerService.Instance.ProcessShot( ViewModel.TargetString );
             ViewModel.TargetString = string.Empty;
         }

@@ -168,6 +168,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Battleship\ShipBattleshipHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Battleship\WeaponBattleshipStandardGun.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Carrier\ShipCarrierHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Cruiser\ShipCruiserHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Cruiser\WeaponCruiserStandardSTSM.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Destroyer\ShipDestroyerHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Destroyer\WeaponDestroyerStandardGun.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Display.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\PatrolBoat\ShipPatrolHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Plane\Missile.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Plane\PlaneF-35Lightning2.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Rescue Ship\ShipRescue.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Submarine\ShipSubMarineHull.png" />
+    <Resource Include="Resources\Sprites\Sea Warfare Set\Submarine\WeaponSubmarineStandard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sprites\Quick Cargo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
