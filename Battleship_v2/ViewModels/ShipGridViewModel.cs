@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using Battleship_v2.Models;
 using Battleship_v2.Services;
+using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
@@ -19,7 +19,7 @@ namespace Battleship_v2.ViewModels
 
         public ShipGridViewModel()
         {
-            m_Model = new ShipGridModel(this);
+            m_Model = new ShipGridModel( this );
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Battleship_v2.Models;
 using Battleship_v2.Services;
+using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
