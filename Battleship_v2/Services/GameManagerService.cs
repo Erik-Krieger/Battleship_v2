@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Battleship_v2.Enemies;
 using Battleship_v2.Models;
 using Battleship_v2.Ships;
@@ -13,7 +15,7 @@ namespace Battleship_v2.Services
         Enemy = 1,
     }
 
-    public class GameManagerService
+    public class GameManagerService : PropertyChangeHandler
     {
         private static Random aRng = new Random();
         private Enemy m_Enemy;
@@ -31,6 +33,7 @@ namespace Battleship_v2.Services
                 {
                     playMove();
                 }
+                NotifyPropertyChanged(nameof(CurrentTurn));
             }
         }
         private PlayerType m_CurrentTurn = PlayerType.You; //= aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
@@ -106,7 +109,7 @@ namespace Battleship_v2.Services
             }
 
             theMove.X = convertLetterIndex( aLetter );
-            theMove.Y = aValue;
+            theMove.Y = aValue - 1;
 
             return true;
         }
@@ -132,27 +135,29 @@ namespace Battleship_v2.Services
             if ( !theMove.IsValid() )
             {
                 // Maybe raise exception here.
+                changeTurns();
                 return;
             }
 
-            foreach ( Ship aShip in EnemyGrid.ViewModel.Ships )
+            foreach ( Ship aShip in theGrid.ViewModel.Ships )
             {
-                Debug.WriteLine( $"{aShip.HitCount}" );
                 if ( aShip.IsHit( theMove ) )
                 {
                     if ( aShip.IsSunk() )
                     {
                         // Draw the Ship, when sunk
-                        EnemyGrid.DrawShip( aShip );
+                        theGrid.DrawShip( aShip );
+                        changeTurns();
                         return;
                     }
 
-                    EnemyGrid.SetCell( theMove.X, theMove.Y, 'h' );
+                    theGrid.SetCell( theMove.X, theMove.Y, 'h' );
+                    changeTurns();
                     return;
                 }
             }
 
-            EnemyGrid.SetCell( theMove.X, theMove.Y, 'm' );
+            theGrid.SetCell( theMove.X, theMove.Y, 'm' );
             // When you made your move change the turn to your opponent.
             changeTurns();
         }
@@ -183,8 +188,10 @@ namespace Battleship_v2.Services
 
         private void playMove()
         {
+            //Thread.Sleep( 500 );
             Position aNextMove = m_Enemy.NextMove();
             processShot(aNextMove, OwnGrid);
+            Debug.WriteLine($"Made my move: {aNextMove}");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Battleship_v2.Models;
 using Battleship_v2.Services;
 using Battleship_v2.Utility;
@@ -18,16 +17,16 @@ namespace Battleship_v2.ViewModels
             {
                 //SetProperty( ref m_TargetString, value );
                 m_TargetString = value;
-                NotifyPropertyChanged(nameof(TargetString));
+                NotifyPropertyChanged( nameof( TargetString ) );
             }
         }
 
         public TargetInputViewModel()
         {
-            Model = new TargetInputModel(this);
+            Model = new TargetInputModel( this );
         }
 
-        public ICommand CmdShoot { get => m_CmdShoot ?? (m_CmdShoot = new CommandHandler( () => Model.ShootButtonPressed(), () => GameManagerService.Instance.YourTurn ) ); }
+        public ICommand CmdShoot { get => m_CmdShoot ?? ( m_CmdShoot = new CommandHandler( () => Model.ShootButtonPressed(), () => GameManagerService.Instance.YourTurn ) ); }
         private ICommand m_CmdShoot;
 
         public bool CanExecute { get => true; }

@@ -86,8 +86,6 @@ namespace Battleship_v2.Ships
 
             foreach ( var aCell in m_Cells )
             {
-                Debug.WriteLine($"tp: {thePosition.X}, {thePosition.Y} - ac: {aCell.X}, {aCell.Y}");
-
                 // These matching means, that they share the same coordinates.
                 // We only want to mark is as a hit, if that cell hasn't been hit before.
                 if (thePosition == aCell && !aCell.WasHit )

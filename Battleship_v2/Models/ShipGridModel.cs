@@ -152,6 +152,20 @@ namespace Battleship_v2.Models
                     SetCell( aShip.XPos, aShip.YPos + anIdx, aShip.Letter );
                 }
             }
+
+            // This is just here to prove a point.
+            if ( ViewModel.Ships.Count == 0)
+            {
+                if ( GameManagerService.Instance.YourTurn)
+                {
+                    Debug.WriteLine("You Won");
+                }
+                else
+                {
+                    Debug.WriteLine( "You Lost" );
+                }
+                throw new Exception("Game Over!");
+            }
         }
 
         /// <summary>
