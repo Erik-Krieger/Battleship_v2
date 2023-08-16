@@ -53,7 +53,7 @@ namespace Battleship_v2.ViewModels
             Model = new ShipGridModel( this );
             if ( theOwner == PlayerType.You )
             {
-                Model.DrawAllShips();
+                //Model.DrawAllShips();
             }
         }
     }

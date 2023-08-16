@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Controls;
+using Battleship_v2.Enemies;
 using Battleship_v2.Models;
 using Battleship_v2.Ships;
-using Battleship_v2.ViewModels;
+using Battleship_v2.Utility;
 
 namespace Battleship_v2.Services
 {
@@ -12,12 +11,31 @@ namespace Battleship_v2.Services
     {
         You = 0,
         Enemy = 1,
-        Pc = 2,
     }
 
     public class GameManagerService
     {
+        private static Random aRng = new Random();
+        private Enemy m_Enemy;
+
         public const int GRID_SIZE = 10;
+
+        public PlayerType CurrentTurn
+        {
+            get => m_CurrentTurn;
+            set
+            {
+                if  (m_CurrentTurn == value) return;
+                m_CurrentTurn = value;
+                if (m_CurrentTurn == PlayerType.Enemy)
+                {
+                    playMove();
+                }
+            }
+        }
+        private PlayerType m_CurrentTurn = PlayerType.You; //= aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
+
+        public bool YourTurn { get => CurrentTurn == PlayerType.You; }
 
         public ShipGridModel OwnGrid { get; set; }
         public ShipGridModel EnemyGrid { get; set; }
@@ -59,9 +77,9 @@ namespace Battleship_v2.Services
             return anIdx;
         }
 
-        private bool tryGetPosition( string theTargetString, out (int, int) theResult )
+        private bool tryGetPosition( string theTargetString, out Position theMove )
         {
-            theResult = (0, 0);
+            theMove = new Position();
 
             if ( string.IsNullOrWhiteSpace( theTargetString ) )
             {
@@ -87,38 +105,40 @@ namespace Battleship_v2.Services
                 return false;
             }
 
-            int anXPos = convertLetterIndex( aLetter );
-            theResult = (anXPos, aValue - 1);
+            theMove.X = convertLetterIndex( aLetter );
+            theMove.Y = aValue;
 
             return true;
         }
 
-        private bool isValidPosition( (int, int) thePosition )
-        {
-            return ( thePosition.Item1 >= 0 && thePosition.Item1 < ShipGridModel.GRID_SIZE && thePosition.Item2 >= 0 && thePosition.Item2 < ShipGridModel.GRID_SIZE );
-        }
-
+        /// <summary>
+        /// This Method handles the shot processing, when you yourself fire.
+        /// </summary>
+        /// <param name="theTargetString"></param>
+        /// <param name="theGrid"></param>
         public void ProcessShot( string theTargetString )
         {
-            if ( !tryGetPosition( theTargetString, out (int, int) thePosition ) )
+            if ( !tryGetPosition( theTargetString, out Position theMove ) )
             {
                 // Maybe raise exception here.
                 return;
             }
 
-            if ( !isValidPosition( thePosition ) )
+            processShot( theMove, EnemyGrid);
+        }
+
+        private void processShot(Position theMove, ShipGridModel theGrid)
+        {
+            if ( !theMove.IsValid() )
             {
                 // Maybe raise exception here.
                 return;
             }
 
-            int anXPos = thePosition.Item1;
-            int anYPos = thePosition.Item2;
-
-            foreach (Ship aShip in EnemyGrid.ViewModel.Ships)
+            foreach ( Ship aShip in EnemyGrid.ViewModel.Ships )
             {
-                Debug.WriteLine($"{aShip.HitCount}");
-                if ( aShip.IsHit( anXPos, anYPos ) )
+                Debug.WriteLine( $"{aShip.HitCount}" );
+                if ( aShip.IsHit( theMove ) )
                 {
                     if ( aShip.IsSunk() )
                     {
@@ -127,13 +147,44 @@ namespace Battleship_v2.Services
                         return;
                     }
 
-                    EnemyGrid.SetCell( anXPos, anYPos, 'h' );
+                    EnemyGrid.SetCell( theMove.X, theMove.Y, 'h' );
                     return;
                 }
             }
 
-            EnemyGrid.SetCell( anXPos, anYPos, 'm' );
+            EnemyGrid.SetCell( theMove.X, theMove.Y, 'm' );
+            // When you made your move change the turn to your opponent.
+            changeTurns();
         }
-        
+
+        private void changeTurns()
+        {
+            CurrentTurn = CurrentTurn == PlayerType.Enemy ? PlayerType.You : PlayerType.Enemy;
+        }
+
+        public void SelectDifficulty( Difficulty theDifficutly )
+        {
+            switch ( theDifficutly )
+            {
+                case Difficulty.Easy:
+                    m_Enemy = new EnemyEasy();
+                    break;
+                case Difficulty.Medium:
+                    m_Enemy = new EnemyMedium();
+                    break;
+                case Difficulty.Hard:
+                    m_Enemy = new EnemyHard();
+                    break;
+                case Difficulty.Person:
+                    m_Enemy = new EnemyPerson();
+                    break;
+            }
+        }
+
+        private void playMove()
+        {
+            Position aNextMove = m_Enemy.NextMove();
+            processShot(aNextMove, OwnGrid);
+        }
     }
 }

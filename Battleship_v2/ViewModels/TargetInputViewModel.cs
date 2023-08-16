@@ -27,7 +27,7 @@ namespace Battleship_v2.ViewModels
             Model = new TargetInputModel(this);
         }
 
-        public ICommand CmdShoot { get => m_CmdShoot ?? (m_CmdShoot = new CommandHandler( () => Model.ShootButtonPressed(), () => CanExecute ) ); }
+        public ICommand CmdShoot { get => m_CmdShoot ?? (m_CmdShoot = new CommandHandler( () => Model.ShootButtonPressed(), () => GameManagerService.Instance.YourTurn ) ); }
         private ICommand m_CmdShoot;
 
         public bool CanExecute { get => true; }

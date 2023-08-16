@@ -1,37 +1,72 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Controls;
+using Battleship_v2.Utility;
 
 namespace Battleship_v2.Ships
 {
     public abstract class Ship
     {
-        private int m_XPos = -1;
-        private int m_YPos = -1;
+        private Position m_Position;
         private Orientation m_Orientation = Orientation.Horizontal;
         private bool m_Reversed = false;
         private char m_Letter;
         private int m_Length;
         private int m_HitCount = 0;
+        private List<Position> m_Cells;
 
         public int Length { get => m_Length; }
-        public int XPos { get => m_XPos; }
-        public int YPos { get => m_YPos; }
+        public int XPos { get => m_Position.X; }
+        public int YPos { get => m_Position.Y; }
         public char Letter { get => m_Letter; }
         public int HitCount { get => m_HitCount ; private set => m_HitCount = value; }
+        public Position Location { get => m_Position; set => m_Position = value; }
 
         public Ship( char theLetterRepresenation, int theLength )
         {
             m_Letter = theLetterRepresenation;
             m_Length = theLength;
+            m_Cells = new List<Position>(m_Length);
         }
 
-        public void SetShipValues(int theXPos, int theYPos, Orientation theOrientation, bool isReversed)
+        public void SetShipValues(Position thePosition, Orientation theOrientation, bool isReversed)
         {
-            m_XPos = theXPos;
-            m_YPos = theYPos;
+            Location = thePosition;
             m_Orientation = theOrientation;
             m_Reversed = isReversed;
+
+            m_Cells.Clear();
+
+            /*m_Cells.Add( thePosition.Clone() );
+
+            for ( int anIdx = 1; anIdx < m_Length; anIdx++ )
+            {
+                m_Cells.Add( m_Cells[m_Cells.Count - 1].GetNeighbour( theOrientation ) );
+            }*/
+
+            for ( int anIdx = 0; anIdx < m_Length; anIdx++ )
+            {
+                if ( theOrientation == Orientation.Horizontal )
+                {
+                    var p = new Position( thePosition.X + anIdx, thePosition.Y );
+                    m_Cells.Add( p );
+                }
+                else
+                {
+                    var p = new Position( thePosition.X, thePosition.Y + anIdx );
+                    m_Cells.Add( p );
+                }
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theXPos"></param>
+        /// <param name="theYPos"></param>
+        /// <param name="theLength"></param>
+        /// <param name="theOrientation"></param>
+        /// <returns></returns>
         private static bool isLegalPosition( int theXPos, int theYPos, int theLength, Orientation theOrientation )
         {
             if ( theOrientation == Orientation.Horizontal )
@@ -44,29 +79,38 @@ namespace Battleship_v2.Ships
             }
         }
 
-        public bool IsHit( int theXPos, int theYPos, bool isPlacementOnly = false )
+        // Returns true if the Position is inside the ships hitbox
+        public bool IsHit( Position thePosition, bool isPlacementOnly = false )
         {
-            bool isHit = false;
-            if ( m_Orientation == Orientation.Horizontal )
+            //m_Cells.ForEach( ( E ) => { Debug.WriteLine( $"{E.X},{E.Y}" ); } );
+
+            foreach ( var aCell in m_Cells )
             {
-                isHit = ( theXPos >= m_XPos && theXPos < m_XPos + m_Length && theYPos == m_YPos );
-            }
-            else
-            {
-                isHit = ( theYPos >= m_YPos && theYPos < m_YPos + m_Length && theXPos == m_XPos );
+                Debug.WriteLine($"tp: {thePosition.X}, {thePosition.Y} - ac: {aCell.X}, {aCell.Y}");
+
+                // These matching means, that they share the same coordinates.
+                // We only want to mark is as a hit, if that cell hasn't been hit before.
+                if (thePosition == aCell && !aCell.WasHit )
+                {
+                    // If this happens during placement exit here.
+                    if ( isPlacementOnly ) return true;
+
+                    // Mark both cells as hit.
+                    // aCell -> for counting unique hits on the ship
+                    aCell.WasHit = true;
+                    // thePosition -> for the tracking of the Enemy AI
+                    thePosition.WasHit = true;
+
+                    return true;
+                }
             }
 
-            if ( !isPlacementOnly && isHit )
-            {
-                m_HitCount++;
-            }
-
-            return isHit;
+            return false;
         }
 
         public bool IsSunk()
         {
-            return m_HitCount >= m_Length;
+            return m_Cells.TrueForAll( ( aCell ) => aCell.WasHit ) ;
         }
 
         public bool IsHorizontal()
@@ -76,7 +120,7 @@ namespace Battleship_v2.Ships
 
         public bool NotPlaced()
         {
-            return (m_XPos < 0 || m_YPos < 0);
+            return m_Cells.Count == 0;
         }
     }
 }

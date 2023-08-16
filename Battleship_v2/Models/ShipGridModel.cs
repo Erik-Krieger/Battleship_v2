@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Threading;
 using System.Windows.Controls;
 using Battleship_v2.Services;
 using Battleship_v2.Ships;
@@ -169,20 +172,24 @@ namespace Battleship_v2.Models
 
                 // Terminate iteration, when a ship has the position (-1/-1), as this means we're comparing against ships
                 // which have not yet been placed.
-                if ( aShip.XPos < 0 || aShip.YPos < 0 )
+                if ( aShip.NotPlaced() )
                 {
                     break;
                 }
+
+                Position aPosition = aShip.Location.Clone();
 
                 for ( int anIdx = 0; anIdx < aShip.Length; anIdx++ )
                 {
                     if ( theShip.IsHorizontal() )
                     {
-                        if ( aShip.IsHit( theShip.XPos + anIdx, theShip.YPos, true ) ) return true;
+                        if ( theShip.IsHit( aPosition, true ) ) return true;
+                        aPosition.MoveRight();
                     }
                     else
                     {
-                        if ( aShip.IsHit( theShip.XPos, theShip.YPos + anIdx, true ) ) return true;
+                        if ( theShip.IsHit( aPosition, true ) ) return true;
+                        aPosition.MoveDown();
                     }
                 }
             }
@@ -202,6 +209,8 @@ namespace Battleship_v2.Models
             // Iterate through all Ships in the List to place them.
             foreach ( Ship aShip in theShipList )
             {
+                Position aPos = new Position();
+
                 // Repeat the Placement until a position is found, where the ship does not collide with any other ship.
                 do
                 {
@@ -211,13 +220,13 @@ namespace Battleship_v2.Models
                     bool isReversed = ( aRng.Next() % 2 == 0 );
 
                     // Generate a random position, that is within the play area.
-                    int anXPos = aRng.Next( 0, 10 - aShip.Length );
-                    int anYPos = aRng.Next( 0, 10 );
+                    aPos.X = aRng.Next( 0, 10 - aShip.Length );
+                    aPos.Y = aRng.Next( 0, 10 );
 
-                    // Swap the two position values, if the orientation is vertical.
-                    (anXPos, anYPos) = ( aDir == Orientation.Vertical ) ? (anYPos, anXPos) : (anXPos, anYPos);
+                    // Swap the two Position values, if the ship aligned vertically.
+                    if ( aDir == Orientation.Vertical ) aPos.Swap();
 
-                    aShip.SetShipValues( anXPos, anYPos, aDir, isReversed );
+                    aShip.SetShipValues( aPos, aDir, isReversed );
                 }
                 while ( isColliding( aShip, theShipList ) );
             }
@@ -227,9 +236,9 @@ namespace Battleship_v2.Models
         /// This will return a List of all valid moves, but the implementation is terrible.
         /// </summary>
         /// <returns></returns>
-        public List<Move> GetValidMoves()
+        public List<Position> GetValidMoves()
         {
-            List<Move> aMoveList = new List<Move>(100);
+            List<Position> aMoveList = new List<Position>(100);
 
             for ( int aRow = 0; aRow < 10; aRow++ )
             {
@@ -237,7 +246,7 @@ namespace Battleship_v2.Models
                 {
                     if ( GetCell( aCol, aRow ) == 'w' )
                     {
-                        aMoveList.Add( new Move( aCol, aRow ) );
+                        aMoveList.Add( new Position( aCol, aRow ) );
                     }
                 }
             }

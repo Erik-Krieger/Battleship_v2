@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using Battleship_v2.Utility;
 
-namespace Battleship_v2.Enemy
+namespace Battleship_v2.Enemies
 {
     public sealed class EnemyMedium : Enemy
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private Move m_LastMove;
-
         /// <summary>
         /// 
         /// </summary>
@@ -20,18 +15,18 @@ namespace Battleship_v2.Enemy
         /// </summary>
         /// <param name="theValidMoves"></param>
         /// <returns></returns>
-        public override Move NextMove( List<Move> theValidMoves )
+        public override Position NextMove()
         {
-            Move aNextMove;
+            Position aNextMove;
 
             if ( m_LastMove != null && m_LastMove.WasHit )
             {
-                aNextMove = findValidNeighbour(theValidMoves, m_LastMove);
+                aNextMove = findValidNeighbour(m_ValidMoves, m_LastMove);
                 if (aNextMove != null ) return aNextMove;
             }
 
-            var anIdx = aRng.Next(theValidMoves.Count);
-            aNextMove = theValidMoves[anIdx];
+            var anIdx = aRng.Next(m_ValidMoves.Count);
+            aNextMove = m_ValidMoves[anIdx];
             m_LastMove = aNextMove;
             return aNextMove;
         }
@@ -42,9 +37,9 @@ namespace Battleship_v2.Enemy
         /// <param name="theValidMoves"></param>
         /// <param name="theMove"></param>
         /// <returns></returns>
-        private static Move findValidNeighbour( List<Move> theValidMoves, Move theMove )
+        private static Position findValidNeighbour( List<Position> theValidMoves, Position theMove )
         {
-            foreach ( Move aMove in theValidMoves )
+            foreach ( Position aMove in theValidMoves )
             {
                 if ( ( aMove.X == theMove.X - 1 || aMove.X == theMove.X + 1 ) && aMove.Y == theMove.Y ) return aMove;
                 if ( ( aMove.Y == theMove.Y - 1 || aMove.Y == theMove.Y + 1 ) && aMove.X == theMove.X ) return aMove;
