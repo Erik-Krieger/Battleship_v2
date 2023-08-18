@@ -6,10 +6,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Battleship_v2.Views"
     xmlns:viewmodels="clr-namespace:Battleship_v2.ViewModels"
+    xmlns:utility="clr-namespace:Battleship_v2.Utility"
     d:DataContext="viewmodels:ShipGridViewModel"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <utility:CellColorConverter x:Key="ColorConverter" />
+
+        <Style x:Key="BlueDataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="CellStyle" Value="{DynamicResource BlueDataGridCellStyle}" />
+        </Style>
+
+        <Style x:Key="BlueDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource ColorConverter}">
+                        <MultiBinding.Bindings>
+                            <Binding RelativeSource="{RelativeSource Self}" />
+                            <Binding Path="Row" />
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
 
     <Grid>
         <DataGrid
@@ -23,28 +55,8 @@
             CanUserReorderColumns="False"
             RowHeaderWidth="0"
             Margin="6"
-            SelectedIndex="{Binding SelectedRow}">
-
-            <DataGrid.CellStyle>
-                <Style
-                    TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger
-                            Property="IsSelected"
-                            Value="True">
-                            <Setter
-                                Property="Foreground"
-                                Value="Black" />
-                            <Setter
-                                Property="Background"
-                                Value="{x:Null}" />
-                            <Setter
-                                Property="BorderBrush"
-                                Value="{x:Null}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
+            SelectedIndex="{Binding SelectedRow}"
+            Style="{StaticResource BlueDataGridStyle}">
         </DataGrid>
     </Grid>
 </UserControl>

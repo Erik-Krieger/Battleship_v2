@@ -67,6 +67,7 @@
     <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
+    <Compile Include="Utility\CellColorConverter.cs" />
     <Compile Include="Utility\CommandHandler.cs" />
     <Compile Include="Models\TargetInputModel.cs" />
     <Compile Include="Utility\Position.cs" />
