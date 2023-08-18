@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Battleship_v2.Utility;
 
@@ -29,7 +30,7 @@ namespace Battleship_v2.ViewModels
 
         public ICommand CmdClose
         {
-            get => m_CmdClose ?? ( m_CmdClose = new CommandHandler( () => { } ) );
+            get => m_CmdClose ?? ( m_CmdClose = new CommandHandler( () => { Application.Current.Shutdown(); } ) );
         }
         private ICommand m_CmdClose;
 
