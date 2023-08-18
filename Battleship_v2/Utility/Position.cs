@@ -20,6 +20,16 @@ namespace Battleship_v2.Utility
 
         public static bool operator ==( Position theLeft, Position theRight ) => ( theLeft.X == theRight.X && theLeft.Y == theRight.Y );
         public static bool operator !=( Position theLeft, Position theRight ) => !( theLeft == theRight );
+        public override bool Equals(object theObject)
+        {
+            if (theObject == null || !(theObject is Position)) return false;
+            Position aPosition = (Position)theObject;
+            return ( this.X == aPosition.X && this.Y == aPosition.Y && this.WasHit == aPosition.WasHit );
+        }
+        public override int GetHashCode()
+        {
+            return ( X.GetHashCode() ^ Y.GetHashCode() ^ WasHit.GetHashCode() );
+        }
 
         public Position( int theXPos, int theYPos )
         {
