@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Web.UI.WebControls;
+using System.Windows.Controls;
 using Battleship_v2.Models;
 using Battleship_v2.Services;
 using Battleship_v2.Ships;
@@ -28,24 +28,13 @@ namespace Battleship_v2.ViewModels
             set
             {
                 m_SelectedRow = value;
-                Debug.WriteLine($"Selected Index: {SelectedRow}, {SelectedColumn}");
+                Debug.WriteLine($"Selected Index: {1}, {SelectedRow}");
                 NotifyPropertyChanged(nameof(SelectedRow));
             }
         }
         private int m_SelectedRow;
 
-        public int SelectedColumn { get; set; }
-
-        public DataGridItem SelectedItem
-        {
-            get => m_SelectedItem;
-            set
-            {
-                m_SelectedItem = value;
-                NotifyPropertyChanged(nameof(SelectedItem));
-            }
-        }
-        private DataGridItem m_SelectedItem;
+        public DataGridColumn SelectedColumn { get; set; }
 
         public List<Ship> Ships { get; set; }
 
