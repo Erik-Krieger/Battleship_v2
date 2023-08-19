@@ -18,7 +18,7 @@ namespace Battleship_v2.ViewModels
         public DataTable Grid
         {
             get => m_Grid;
-            set => SetProperty( ref m_Grid, value );
+            set => SetProperty(ref m_Grid, value);
         }
         private DataTable m_Grid;
 
@@ -29,7 +29,7 @@ namespace Battleship_v2.ViewModels
             {
                 m_SelectedRow = value;
                 Debug.WriteLine($"Selected Index: {SelectedRow}, {SelectedItem}");
-                NotifyPropertyChanged( nameof( SelectedRow ) );
+                NotifyPropertyChanged(nameof(SelectedRow));
             }
         }
         private int m_SelectedRow;
@@ -40,21 +40,34 @@ namespace Battleship_v2.ViewModels
             set
             {
                 m_SelectedItem = value;
-                NotifyPropertyChanged( nameof( SelectedItem ) );
+                NotifyPropertyChanged(nameof(SelectedItem));
             }
         }
         private DataGridItem m_SelectedItem;
 
         public List<Ship> Ships { get; set; }
 
-        public ShipGridViewModel( PlayerType theOwner)
+        public ShipGridViewModel(PlayerType theOwner)
         {
             Owner = theOwner;
-            Model = new ShipGridModel( this );
-            if ( theOwner == PlayerType.You )
+            Model = new ShipGridModel(this);
+            if (theOwner == PlayerType.You)
             {
                 //Model.DrawAllShips();
             }
+        }
+
+        public void UpdateGrid()
+        {
+            Debug.WriteLine("Refresh");
+            //NotifyPropertyChanged(nameof(m_Grid));
+            /*var row = Grid.NewRow();
+            Grid.Rows.Add(row);
+            //NotifyPropertyChanged(nameof(Grid));
+            Grid.Rows.Remove(row);
+            //NotifyPropertyChanged(nameof(Background));*/
+            var aGrid = Grid;
+            Grid = aGrid;
         }
     }
 }

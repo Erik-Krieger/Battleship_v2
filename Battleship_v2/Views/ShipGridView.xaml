@@ -19,7 +19,7 @@
             <Setter Property="CellStyle" Value="{DynamicResource BlueDataGridCellStyle}" />
         </Style>
 
-        <Style x:Key="BlueDataGridCellStyle" TargetType="DataGridCell">
+        <Style x:Key="BlueDataGridCellStyle" TargetType="DataGridCell" >
             <Setter Property="Background">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource ColorConverter}">

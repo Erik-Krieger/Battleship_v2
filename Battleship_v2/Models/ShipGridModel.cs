@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -104,6 +105,7 @@ namespace Battleship_v2.Models
 
             var aRow = ViewModel.Grid.Rows[theYPos];
             aRow[ViewModel.Grid.Columns[theXPos]] = $"{theValue}";
+            ViewModel.UpdateGrid();
         }
 
         /// <summary>

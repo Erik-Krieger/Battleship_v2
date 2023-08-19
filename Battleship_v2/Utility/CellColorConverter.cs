@@ -25,7 +25,6 @@ namespace Battleship_v2.Utility
                 try
                 {
                     string columnName = (string)cell.Column.Header;
-                    string content = row.Field<string>(columnName); // Header must be same as column name
                     int columnIndex = cell.Column.DisplayIndex;
 
                     if (columnIndex == 0)
@@ -33,8 +32,10 @@ namespace Battleship_v2.Utility
                         cell.FontStyle = FontStyles.Italic;
                         cell.FontWeight = FontWeights.Bold;
                         cell.FontSize = 20;
-                        return new SolidColorBrush(Colors.LightGoldenrodYellow);
+                        return new SolidColorBrush(Colors.Yellow);
                     }
+
+                    string content = row.Field<string>(columnName); // Header must be same as column name
 
                     if (content == "w")
                     {
@@ -57,8 +58,9 @@ namespace Battleship_v2.Utility
                     }
                     
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine(e);
                     return new SolidColorBrush(Colors.Black); // Error! An Exception was thrown
                 }
             }
@@ -67,7 +69,7 @@ namespace Battleship_v2.Utility
 
         object[] IMultiValueConverter.ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
