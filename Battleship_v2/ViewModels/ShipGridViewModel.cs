@@ -28,11 +28,13 @@ namespace Battleship_v2.ViewModels
             set
             {
                 m_SelectedRow = value;
-                Debug.WriteLine($"Selected Index: {SelectedRow}, {SelectedItem}");
+                Debug.WriteLine($"Selected Index: {SelectedRow}, {SelectedColumn}");
                 NotifyPropertyChanged(nameof(SelectedRow));
             }
         }
         private int m_SelectedRow;
+
+        public int SelectedColumn { get; set; }
 
         public DataGridItem SelectedItem
         {
@@ -50,24 +52,11 @@ namespace Battleship_v2.ViewModels
         public ShipGridViewModel(PlayerType theOwner)
         {
             Owner = theOwner;
-            Model = new ShipGridModel(this);
+            Model = new ShipGridModel(this, theOwner == PlayerType.You);
             if (theOwner == PlayerType.You)
             {
                 //Model.DrawAllShips();
             }
-        }
-
-        public void UpdateGrid()
-        {
-            Debug.WriteLine("Refresh");
-            //NotifyPropertyChanged(nameof(m_Grid));
-            /*var row = Grid.NewRow();
-            Grid.Rows.Add(row);
-            //NotifyPropertyChanged(nameof(Grid));
-            Grid.Rows.Remove(row);
-            //NotifyPropertyChanged(nameof(Background));*/
-            var aGrid = Grid;
-            Grid = aGrid;
         }
     }
 }

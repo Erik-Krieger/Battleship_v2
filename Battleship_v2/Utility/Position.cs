@@ -20,16 +20,16 @@ namespace Battleship_v2.Utility
 
         public static bool operator ==( Position theLeft, Position theRight ) => ( theLeft.X == theRight.X && theLeft.Y == theRight.Y );
         public static bool operator !=( Position theLeft, Position theRight ) => !( theLeft == theRight );
-        public override bool Equals(object theObject)
+        /*public override bool Equals(object theObject)
         {
             if (theObject == null || !(theObject is Position)) return false;
             Position aPosition = (Position)theObject;
-            return ( this.X == aPosition.X && this.Y == aPosition.Y && this.WasHit == aPosition.WasHit );
-        }
-        public override int GetHashCode()
+            return ( this.X == aPosition.X && this.Y == aPosition.Y *//*&& this.WasHit == aPosition.WasHit*//* );
+        }*/
+        /*public override int GetHashCode()
         {
-            return ( X.GetHashCode() ^ Y.GetHashCode() ^ WasHit.GetHashCode() );
-        }
+            return ( (X.GetHashCode() * 17) ^ (Y.GetHashCode() * 47) ^ (WasHit.GetHashCode() * 89) );
+        }*/
 
         public Position( int theXPos, int theYPos )
         {
@@ -51,7 +51,8 @@ namespace Battleship_v2.Utility
 
         public override string ToString()
         {
-            return $"Position ({X}/{Y})";
+            char aLetter = (char)(X + 65);
+            return $"Position ({aLetter}/{Y+1})";
         }
 
         public Position Clone() => new Position( X, Y );

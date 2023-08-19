@@ -18,8 +18,6 @@ namespace Battleship_v2.Utility
     {
         object IMultiValueConverter.Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine("Converter");
-
             if (values[0] is DataGridCell cell && values[1] is DataRow row)
             {
                 try

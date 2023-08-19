@@ -37,26 +37,21 @@ namespace Battleship_v2.Ships
 
             m_Cells.Clear();
 
-            /*m_Cells.Add( thePosition.Clone() );
-
-            for ( int anIdx = 1; anIdx < m_Length; anIdx++ )
-            {
-                m_Cells.Add( m_Cells[m_Cells.Count - 1].GetNeighbour( theOrientation ) );
-            }*/
-
             for ( int anIdx = 0; anIdx < m_Length; anIdx++ )
             {
+                Position p;
                 if ( theOrientation == Orientation.Horizontal )
                 {
-                    var p = new Position( thePosition.X + anIdx, thePosition.Y );
-                    m_Cells.Add( p );
+                    p = new Position( thePosition.X + anIdx, thePosition.Y );
                 }
                 else
                 {
-                    var p = new Position( thePosition.X, thePosition.Y + anIdx );
-                    m_Cells.Add( p );
+                    p = new Position( thePosition.X, thePosition.Y + anIdx );
                 }
+                m_Cells.Add(p);
+                //Debug.WriteLine(p);
             }
+            //Debug.WriteLine("");
         }
 
         /// <summary>
@@ -82,14 +77,19 @@ namespace Battleship_v2.Ships
         // Returns true if the Position is inside the ships hitbox
         public bool IsHit( Position thePosition, bool isPlacementOnly = false )
         {
-            //m_Cells.ForEach( ( E ) => { Debug.WriteLine( $"{E.X},{E.Y}" ); } );
-
             foreach ( var aCell in m_Cells )
             {
+                Debug.WriteLine($"Positions {thePosition} - {aCell}");
                 // These matching means, that they share the same coordinates.
                 // We only want to mark is as a hit, if that cell hasn't been hit before.
-                if (thePosition == aCell && !aCell.WasHit )
+                if (thePosition == aCell )
                 {
+                    Debug.WriteLine("Matching");
+                    //Debug.WriteLine("Cells colliding");
+                    // Skip Iteration, if the cell was already hit.
+                    if (aCell.WasHit) continue;
+                    //Debug.WriteLine("Collsion");
+
                     // If this happens during placement exit here.
                     if ( isPlacementOnly ) return true;
 

@@ -53,10 +53,12 @@
             CanUserResizeRows="False"
             CanUserSortColumns="False"
             CanUserReorderColumns="False"
-            RowHeaderWidth="0"
             Margin="6"
             SelectedIndex="{Binding SelectedRow}"
-            Style="{StaticResource BlueDataGridStyle}">
+            CurrentColumn="{Binding SelectedColumn}"
+            Style="{StaticResource BlueDataGridStyle}"
+            HeadersVisibility="All"
+            RowHeaderWidth="32">
         </DataGrid>
     </Grid>
 </UserControl>
