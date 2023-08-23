@@ -1,24 +1,18 @@
-﻿namespace Battleship_v2.Services
-{
-    public enum Window
-    {
-        MainMenu,
-        MultiplayerHost,
-        MultiplayerClient,
-        MainGame,
-        GameOver,
-    }
+﻿using Battleship_v2.ViewModels;
+using System.Threading;
 
+namespace Battleship_v2.Services
+{
     public class WindowManagerService
     {
         public static WindowManagerService Instance { get; private set; } = new WindowManagerService();
-        public Window CurrentWindow { get; private set; } = Window.MainMenu;
-
         private WindowManagerService() { }
 
-        public void SwapScreens(Window theWindow)
-        {
+        public NavigationViewModel NavigationViewModel { get; private set; }
 
+        public void RegisterNavigationViewModel(NavigationViewModel theViewModel)
+        {
+            NavigationViewModel = theViewModel;
         }
     }
 }

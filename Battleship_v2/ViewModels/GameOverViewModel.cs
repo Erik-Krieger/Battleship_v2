@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Battleship_v2.Services;
 using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
@@ -23,6 +24,17 @@ namespace Battleship_v2.ViewModels
             {
                 GameStatusPanel = new LoserViewModel();
             }
+        }
+
+        private void playAgain()
+        {
+            // This will change
+            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MainMenuViewModel();
+        }
+
+        private void backToMenu()
+        {
+            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MainMenuViewModel();
         }
     }
 }

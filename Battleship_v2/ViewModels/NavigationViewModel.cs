@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Battleship_v2.Services;
 using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
@@ -17,6 +18,9 @@ namespace Battleship_v2.ViewModels
             set => SetProperty(ref m_SelectedViewModel, value);
         }
 
-        public NavigationViewModel() { }
+        public NavigationViewModel()
+        {
+            WindowManagerService.Instance.RegisterNavigationViewModel(this);
+        }
     }
 }

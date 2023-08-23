@@ -13,12 +13,7 @@ namespace Battleship_v2.ViewModels
 {
     public class SingleplayerSetupViewModel
     {
-        private NavigationViewModel m_NavigationViewModel;
-
-        public SingleplayerSetupViewModel(NavigationViewModel theNavigationViewModel)
-        {
-            m_NavigationViewModel = theNavigationViewModel;
-        }
+        public SingleplayerSetupViewModel() {}
 
         public ICommand CmdBegin
         {
@@ -27,7 +22,7 @@ namespace Battleship_v2.ViewModels
                 GameManagerService.Instance.SelectDifficulty(0);
                 return m_CmdBegin ?? new CommandHandler( () =>
                 {
-                    m_NavigationViewModel.SelectedViewModel = new GameViewModel( m_NavigationViewModel );
+                    WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel();
                 } );
             }
         }

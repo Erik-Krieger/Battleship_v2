@@ -161,7 +161,7 @@ namespace Battleship_v2.Models
         }
 
         /// <summary>
-        /// 
+        /// Draws all Ships onto the Grip.
         /// </summary>
         public void DrawAllShips()
         {
@@ -174,7 +174,7 @@ namespace Battleship_v2.Models
         }
 
         /// <summary>
-        /// 
+        /// Draws the Ship onto the Grid.
         /// </summary>
         /// <param name="theShip"></param>
         public void DrawShip(Ship theShip, bool isSunk = true)
@@ -191,20 +191,12 @@ namespace Battleship_v2.Models
             // This is just here to prove a point.
             if (ViewModel.Ships.Count == 0)
             {
-                if (GameManagerService.Instance.YourTurn)
-                {
-                    Debug.WriteLine("You Won");
-                }
-                else
-                {
-                    Debug.WriteLine("You Lost");
-                }
-                throw new Exception("Game Over!");
+                WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameOverViewModel(GameManagerService.Instance.YourTurn);
             }
         }
 
         /// <summary>
-        /// 
+        /// Checks whether or not the ship is colliding with any other ship.
         /// </summary>
         /// <param name="theShip"></param>
         /// <param name="theShipList"></param>

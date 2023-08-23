@@ -25,6 +25,18 @@
             DataType="{x:Type viewmodels:MultiplayerSetupViewModel}">
             <local:MultiplayerSetupView />
         </DataTemplate>
+        <DataTemplate
+            DataType="{x:Type viewmodels:GameOverViewModel}">
+            <local:GameOverView />
+        </DataTemplate>
+        <DataTemplate
+            DataType="{x:Type viewmodels:HostMenuViewModel}">
+            <local:HostMenuView />
+        </DataTemplate>
+        <DataTemplate
+            DataType="{x:Type viewmodels:JoinMenuViewModel}">
+            <local:JoinMenuView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <DockPanel

@@ -12,7 +12,7 @@ namespace Battleship_v2.Views
         {
             InitializeComponent();
             var aViewModel = new NavigationViewModel();
-            aViewModel.SelectedViewModel = new MainMenuViewModel( aViewModel );
+            aViewModel.SelectedViewModel = new MainMenuViewModel();
             DataContext = aViewModel;
         }
     }

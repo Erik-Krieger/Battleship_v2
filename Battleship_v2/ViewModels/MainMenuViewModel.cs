@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Battleship_v2.Services;
 using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
     public class MainMenuViewModel
     {
-        private readonly NavigationViewModel m_NavigationViewModel;
-
-        public MainMenuViewModel( NavigationViewModel theNavigationViewModel )
-        {
-            m_NavigationViewModel = theNavigationViewModel;
-        }
+        public MainMenuViewModel() {}
 
         public Action Close { get; set; }
 
@@ -36,12 +32,12 @@ namespace Battleship_v2.ViewModels
 
         private void openSingleplayer( object theObject = null )
         {
-            m_NavigationViewModel.SelectedViewModel = new SingleplayerSetupViewModel(m_NavigationViewModel);
+            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new SingleplayerSetupViewModel();
         }
 
         private void openMultiplayer( object theObject = null )
         {
-            m_NavigationViewModel.SelectedViewModel = new MultiplayerSetupViewModel(m_NavigationViewModel);
+            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MultiplayerSetupViewModel();
         }
     }
 }

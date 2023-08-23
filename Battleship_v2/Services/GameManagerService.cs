@@ -6,6 +6,7 @@ using Battleship_v2.Enemies;
 using Battleship_v2.Models;
 using Battleship_v2.Ships;
 using Battleship_v2.Utility;
+using Battleship_v2.ViewModels;
 
 namespace Battleship_v2.Services
 {

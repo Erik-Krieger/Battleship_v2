@@ -82,7 +82,10 @@
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Ships\Ship.cs" />
     <Compile Include="Utility\Tiles.cs" />
+    <Compile Include="Utility\WebSocketServer.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
+    <Compile Include="ViewModels\HostMenuViewModel.cs" />
+    <Compile Include="ViewModels\JoinMenuViewModel.cs" />
     <Compile Include="ViewModels\LoserViewModel.cs" />
     <Compile Include="ViewModels\MultiplayerSetupViewModel.cs" />
     <Compile Include="ViewModels\NavigationViewModel.cs" />
@@ -97,6 +100,12 @@
     </Compile>
     <Compile Include="Views\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HostMenuView.xaml.cs">
+      <DependentUpon>HostMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JoinMenuView.xaml.cs">
+      <DependentUpon>JoinMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoserView.xaml.cs">
       <DependentUpon>LoserView.xaml</DependentUpon>
@@ -139,6 +148,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HostMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JoinMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,6 +257,9 @@
     </PackageReference>
     <PackageReference Include="System.Memory">
       <Version>4.5.5</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.WebSockets">
+      <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
