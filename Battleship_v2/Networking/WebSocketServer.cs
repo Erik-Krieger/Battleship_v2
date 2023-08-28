@@ -1,62 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Battleship_v2.Utility
+namespace Battleship_v2.Networking
 {
-    public class WebSocketServer
+    public class WebSocketServer : NetworkPeer
     {
-        public const int PORT = 1337;    
+        private TcpListener listener { get; set; } = new TcpListener(IPAddress.Loopback, PORT);
 
-        private object m_Lock = new object();
-
-        private TcpListener listener
-        {
-            get
-            {
-                lock (m_Lock)
-                {
-                    if (m_Listener == null)
-                    {
-                        m_Listener = new TcpListener(IPAddress.Loopback, PORT);
-                    }
-                    return m_Listener;
-                }
-            }
-        }
-        private TcpListener m_Listener; 
+        private NetworkStream m_Stream;
 
         public WebSocketServer() { }
 
         public void Start()
         {
-            string ip = "127.0.0.1";
-            int port = 80;
-            var server = new TcpListener(IPAddress.Parse(ip), port);
+            listener.Start();
+            Debug.WriteLine($"Server has started on {IPAddress.Loopback}:{PORT}, Waiting for a connection…");
 
-            server.Start();
-            Console.WriteLine("Server has started on {0}:{1}, Waiting for a connection…", ip, port);
+            TcpClient client = listener.AcceptTcpClient();
+            Debug.WriteLine("A client connected.");
 
-            TcpClient client = server.AcceptTcpClient();
-            Console.WriteLine("A client connected.");
-
-            NetworkStream stream = client.GetStream();
+            NetworkStream m_Stream = client.GetStream();
 
             // enter to an infinite cycle to be able to handle every change in stream
             while (true)
             {
-                while (!stream.DataAvailable) ;
+                while (!m_Stream.DataAvailable) ;
                 while (client.Available < 3) ; // match against "get"
 
                 byte[] bytes = new byte[client.Available];
-                stream.Read(bytes, 0, bytes.Length);
+                m_Stream.Read(bytes, 0, bytes.Length);
                 string s = Encoding.UTF8.GetString(bytes);
 
                 if (Regex.IsMatch(s, "^GET", RegexOptions.IgnoreCase))
                 {
-                    Console.WriteLine("=====Handshaking from client=====\n{0}", s);
+                    Debug.WriteLine("=====Handshaking from client=====\n{0}", s);
 
                     // 1. Obtain the value of the "Sec-WebSocket-Key" request header without any leading or trailing whitespace
                     // 2. Concatenate it with "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" (a special GUID specified by RFC 6455)
@@ -74,7 +56,7 @@ namespace Battleship_v2.Utility
                         "Upgrade: websocket\r\n" +
                         "Sec-WebSocket-Accept: " + swkaSha1Base64 + "\r\n\r\n");
 
-                    stream.Write(response, 0, response.Length);
+                    m_Stream.Write(response, 0, response.Length);
                 }
                 else
                 {
@@ -102,7 +84,7 @@ namespace Battleship_v2.Utility
 
                     if (msglen == 0)
                     {
-                        Console.WriteLine("msglen == 0");
+                        Debug.WriteLine("msglen == 0");
                     }
                     else if (mask)
                     {
@@ -114,14 +96,28 @@ namespace Battleship_v2.Utility
                             decoded[i] = (byte)(bytes[offset + (int)i] ^ masks[i % 4]);
 
                         string text = Encoding.UTF8.GetString(decoded);
-                        Console.WriteLine("{0}", text);
+                        Debug.WriteLine($"{text}");
+                        addMessageToQueue(text);
                     }
                     else
-                        Console.WriteLine("mask bit not set");
+                    {
+                        Debug.WriteLine("mask bit not set");
+                    }
 
-                    Console.WriteLine();
+                    Debug.WriteLine("");
                 }
             }
+        }
+
+        public override void SendMessage(string theMessage)
+        {
+            if (m_Stream == null || theMessage == null || string.IsNullOrEmpty(theMessage))
+            {
+                return;
+            }
+
+            byte[] aByteArray = Encoding.UTF8.GetBytes(theMessage);
+            m_Stream.Write(aByteArray, 0, aByteArray.Length);
         }
     }
 }

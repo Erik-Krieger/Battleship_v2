@@ -10,6 +10,9 @@ using Battleship_v2.ViewModels;
 
 namespace Battleship_v2.Services
 {
+    /// <summary>
+    /// An enum that represents the owner of the current turn.
+    /// </summary>
     public enum PlayerType
     {
         You = 0,
@@ -18,11 +21,24 @@ namespace Battleship_v2.Services
 
     public class GameManagerService : PropertyChangeHandler
     {
+        /// <summary>
+        /// An instance of a randomizer shared across the whole class.
+        /// </summary>
         private static Random aRng = new Random();
+
+        /// <summary>
+        /// The Opponent object, this can either be an AI or another human player.
+        /// </summary>
         private Enemy m_Enemy;
 
+        /// <summary>
+        /// The size of one of the ship grid sides, it's valid for both of them, since the grids are square.
+        /// </summary>
         public const int GRID_SIZE = 10;
 
+        /// <summary>
+        /// Keeps track of whose turn it is.
+        /// </summary>
         public PlayerType CurrentTurn
         {
             get => m_CurrentTurn;
@@ -64,23 +80,49 @@ namespace Battleship_v2.Services
             return this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theModel"></param>
+        /// <returns></returns>
         public GameManagerService InjectTargetInputModel( TargetInputModel theModel )
         {
             TargetInput = theModel;
             return this;
         }
 
+        /// <summary>
+        /// The Instance Property and the only way to access this class, as it is a singleton.
+        /// </summary>
         public static GameManagerService Instance { get; private set; } = new GameManagerService();
+
+        /// <summary>
+        /// The private constructor of the class, only to be called once on instantiation.
+        /// </summary>
         private GameManagerService() { }
 
+        /// <summary>
+        /// Converts any letter into an integer beginning at 0 disregarding case.
+        /// </summary>
+        /// <param name="theLetter">The letter to be converted</param>
+        /// <returns></returns>
         private int convertLetterIndex( char theLetter )
         {
+            // Implicitly casting the char to an integer.
             int anIdx = theLetter;
+            // Subtracting 65 to make 'A' == 0
             anIdx -= 65;
+            // In case the value is still bigger than 32 (indicating it's a lowercase letter) subtract 32 to make 'a' == 0
             anIdx = anIdx >= 32 ? anIdx - 32 : anIdx;
             return anIdx;
         }
 
+        /// <summary>
+        /// The logic for converting a target string into an X,Y integer position.
+        /// </summary>
+        /// <param name="theTargetString">the target string to parse</param>
+        /// <param name="theMove">the Move object to be written into</param>
+        /// <returns></returns>
         private bool tryGetPosition( string theTargetString, out Position theMove )
         {
             theMove = new Position();
@@ -122,52 +164,74 @@ namespace Battleship_v2.Services
         /// <param name="theGrid"></param>
         public void ProcessShot( string theTargetString )
         {
+            // Parse out the target position.
             if ( !tryGetPosition( theTargetString, out Position theMove ) )
             {
-                // Maybe raise exception here.
                 return;
             }
 
+            // Play the move.
             processShot( theMove, EnemyGrid);
         }
 
+        /// <summary>
+        /// This processes any given shot and encapsulates the main game logic.
+        /// </summary>
+        /// <param name="theMove">The move to play</param>
+        /// <param name="theGrid">The Board to make the move on</param>
         private void processShot(Position theMove, ShipGridModel theGrid)
         {
+            // Checks if the move is valid, if not the turn is over without playing a move.
             if ( !theMove.IsValid() )
             {
-                // Maybe raise exception here.
+                // We change the turn here.
                 changeTurns();
                 return;
             }
 
+            // Iterating through all ships not yet sunk.
             foreach ( Ship aShip in theGrid.ViewModel.Ships )
             {
+                // Check to see, if the move is a hit on the current ship.
                 if ( aShip.IsHit( theMove ) )
                 {
+                    // Check if that hit caused the ship to sink.
                     if ( aShip.IsSunk() )
                     {
                         // Draw the Ship, when sunk
                         theGrid.DrawShip( aShip );
-                        changeTurns();
-                        return;
+                    }
+                    else
+                    {
+                        // Mark the shot as a hit, in the case that the ship wasn't sunk
+                        theGrid.SetCell(theMove.X, theMove.Y, 'h');
                     }
 
-                    theGrid.SetCell( theMove.X, theMove.Y, 'h' );
+                    // Change turns.
                     changeTurns();
                     return;
                 }
             }
 
+            // this is the base case, if there was no hit on the cell, we mark it as a miss.
             theGrid.SetCell( theMove.X, theMove.Y, 'm' );
+
             // When you made your move change the turn to your opponent.
             changeTurns();
         }
 
+        /// <summary>
+        /// Inverts the current turn. This means converting YourTurn => EnemyTurn or EnemyTurn => YourTurn
+        /// </summary>
         private void changeTurns()
         {
             CurrentTurn = CurrentTurn == PlayerType.Enemy ? PlayerType.You : PlayerType.Enemy;
         }
 
+        /// <summary>
+        /// This will instantiate an opponent type, based on the passed in enum value.
+        /// </summary>
+        /// <param name="theDifficutly">This is an enum value, indicating the opponent type.</param>
         public void SelectDifficulty( Difficulty theDifficutly )
         {
             switch ( theDifficutly )
@@ -187,11 +251,24 @@ namespace Battleship_v2.Services
             }
         }
 
+        /// <summary>
+        /// This Method is called, when you're waiting for your opponent to make a move.
+        /// </summary>
         private void playMove()
         {
-            //Thread.Sleep( 500 );
+            // Retrieves the next move to play, from either the AI or the opposing player.
             Position aNextMove = m_Enemy.NextMove();
+
+            // This is needed, when playing against other people, since in the case of them not submitting a move instantanious
+            // aNextMove will be none.
+            if ( aNextMove == null)
+            {
+                return;
+            }
+
+            // This will process the shot, and encapsulates most of the game logic.
             processShot(aNextMove, OwnGrid);
+            // For good measure.
             Debug.WriteLine($"Made my move: {aNextMove}");
         }
     }

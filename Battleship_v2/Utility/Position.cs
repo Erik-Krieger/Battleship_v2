@@ -46,6 +46,13 @@ namespace Battleship_v2.Utility
 
         public Position() : this( -1, -1 ) { }
 
+        public Position(string aPositionMessage)
+        {
+            // Need to implement this properly.
+            X = 0;
+            Y = 0;
+        }
+
         public void SetValuesFrom(Position thePosition)
         {
             X = thePosition.X;

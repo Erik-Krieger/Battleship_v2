@@ -65,6 +65,8 @@
     <Compile Include="Enemies\EnemyPerson.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="Networking\NetworkPeer.cs" />
+    <Compile Include="Networking\WebSocketClient.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\WindowManagerService.cs" />
     <Compile Include="Utility\CellColorConverter.cs" />
@@ -82,7 +84,7 @@
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Ships\Ship.cs" />
     <Compile Include="Utility\Tiles.cs" />
-    <Compile Include="Utility\WebSocketServer.cs" />
+    <Compile Include="Networking\WebSocketServer.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\HostMenuViewModel.cs" />
     <Compile Include="ViewModels\JoinMenuViewModel.cs" />
