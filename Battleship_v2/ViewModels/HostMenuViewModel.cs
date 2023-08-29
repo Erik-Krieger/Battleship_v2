@@ -1,4 +1,5 @@
-﻿using Battleship_v2.Services;
+﻿using Battleship_v2.Enemies;
+using Battleship_v2.Services;
 using Battleship_v2.Utility;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Battleship_v2.ViewModels
     {
         public ICommand CmdBegin
         {
-            get => m_CmdBegin ?? new CommandHandler(() => WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel(), () => NetworkService.Instance.Stream != null );
+            get => m_CmdBegin ?? new CommandHandler(() => WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel(), () => NetworkService.Instance.NetworkPeer.PeerConnected);
         }
         private ICommand m_CmdBegin;
 
@@ -26,6 +27,9 @@ namespace Battleship_v2.ViewModels
         public HostMenuViewModel()
         {
             NetworkService.Instance.OpenServer();
+            GameManagerService.Instance.SelectDifficulty(Difficulty.Person);
+
+            ((EnemyPerson)GameManagerService.Instance.Opponent).InjectNetworkPeer(NetworkService.Instance.NetworkPeer);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Battleship_v2.Networking;
+﻿using Battleship_v2.Enemies;
+using Battleship_v2.Networking;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -46,6 +47,7 @@ namespace Battleship_v2.Services
         public void OpenServer()
         {
             NetworkPeer = new WebSocketServer();
+            NetworkPeer.Connect("");
         }
 
         /// <summary>
@@ -53,21 +55,11 @@ namespace Battleship_v2.Services
         /// </summary>
         public void CloseServer() { }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="theHostname"></param>
-        public async void JoinServer(string theHostname)
+        public void JoinServer(string theHostname)
         {
-            Uri uri = new Uri($"ws://{theHostname}");
-            ClientWebSocket ws = new ClientWebSocket();
-            await ws.ConnectAsync(uri, default);
+            NetworkPeer = new WebSocketClient();
 
-            var bytes = new byte[1024];
-            var result = await ws.ReceiveAsync(new ArraySegment<byte>(bytes), default);
-            string res = Encoding.UTF8.GetString(bytes, 0, result.Count);
-
-            await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client Closed", default);
+            NetworkPeer.Connect(theHostname);
         }
     }
 }

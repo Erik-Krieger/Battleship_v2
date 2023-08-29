@@ -75,7 +75,6 @@
     <Compile Include="Utility\Position.cs" />
     <Compile Include="Utility\PropertyChangeHandler.cs" />
     <Compile Include="Models\ShipGridModel.cs" />
-    <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="Services\GameManagerService.cs" />
     <Compile Include="Ships\Submarine.cs" />
     <Compile Include="Ships\Destroyer.cs" />

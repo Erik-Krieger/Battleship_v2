@@ -5,12 +5,15 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Battleship_v2.Networking
 {
     public class WebSocketServer : NetworkPeer
     {
         private TcpListener listener { get; set; } = new TcpListener(IPAddress.Loopback, PORT);
+
+        private TcpClient m_TcpClient;
 
         private NetworkStream m_Stream;
 
@@ -21,18 +24,26 @@ namespace Battleship_v2.Networking
             listener.Start();
             Debug.WriteLine($"Server has started on {IPAddress.Loopback}:{PORT}, Waiting for a connection…");
 
-            TcpClient client = listener.AcceptTcpClient();
+            m_TcpClient = listener.AcceptTcpClient();
             Debug.WriteLine("A client connected.");
 
-            NetworkStream m_Stream = client.GetStream();
+            NetworkStream m_Stream = m_TcpClient.GetStream();
 
             // enter to an infinite cycle to be able to handle every change in stream
             while (true)
             {
-                while (!m_Stream.DataAvailable) ;
-                while (client.Available < 3) ; // match against "get"
+                // Check if there is Data in the stream.
+                // If not sleep for 25ms to conserve energy.
+                while (!m_Stream.DataAvailable)
+                {
+                    Thread.Sleep(25);
+                }
 
-                byte[] bytes = new byte[client.Available];
+                // Once the is something is something in the stream
+                // Keep checking until it has 3 bytes.
+                while (m_TcpClient.Available < 3) ; // match against "get"
+
+                byte[] bytes = new byte[m_TcpClient.Available];
                 m_Stream.Read(bytes, 0, bytes.Length);
                 string s = Encoding.UTF8.GetString(bytes);
 
@@ -57,6 +68,9 @@ namespace Battleship_v2.Networking
                         "Sec-WebSocket-Accept: " + swkaSha1Base64 + "\r\n\r\n");
 
                     m_Stream.Write(response, 0, response.Length);
+
+                    // Set the NetworkPeer State to connected
+                    PeerConnected = true;
                 }
                 else
                 {
@@ -96,7 +110,7 @@ namespace Battleship_v2.Networking
                             decoded[i] = (byte)(bytes[offset + (int)i] ^ masks[i % 4]);
 
                         string text = Encoding.UTF8.GetString(decoded);
-                        Debug.WriteLine($"{text}");
+                        //Debug.WriteLine($"{text}");
                         addMessageToQueue(text);
                     }
                     else
@@ -111,13 +125,60 @@ namespace Battleship_v2.Networking
 
         public override void SendMessage(string theMessage)
         {
-            if (m_Stream == null || theMessage == null || string.IsNullOrEmpty(theMessage))
+            if (m_TcpClient.GetStream() == null || string.IsNullOrEmpty(theMessage))
             {
                 return;
             }
 
             byte[] aByteArray = Encoding.UTF8.GetBytes(theMessage);
-            m_Stream.Write(aByteArray, 0, aByteArray.Length);
+
+            byte[] aHeader;
+            if ( aByteArray.Length < 126)
+            {
+                aHeader = new byte[]
+                {
+                    129,
+                    (byte)aByteArray.Length,
+                };
+            }
+            else if ( aByteArray.Length <= 65536)
+            {
+                aHeader = new byte[]
+                {
+                    129,
+                    126,
+                    (byte)(aByteArray.Length >> 8),
+                    (byte)(aByteArray.Length),
+                };
+            }
+            else
+            {
+                aHeader = new byte[]
+                {
+                    129,
+                    127,
+                    (byte)(aByteArray.Length >> 56),
+                    (byte)(aByteArray.Length >> 48),
+                    (byte)(aByteArray.Length >> 40),
+                    (byte)(aByteArray.Length >> 32),
+                    (byte)(aByteArray.Length >> 24),
+                    (byte)(aByteArray.Length >> 16),
+                    (byte)(aByteArray.Length >> 8),
+                    (byte)(aByteArray.Length),
+                };
+            }
+
+            byte[] aFinalMessage = new byte[aByteArray.Length + aHeader.Length];
+            aHeader.CopyTo(aFinalMessage, 0);
+            aByteArray.CopyTo(aFinalMessage, aHeader.Length);
+            
+            m_TcpClient.GetStream().Write(aFinalMessage, 0, aFinalMessage.Length);
+        }
+
+        public override void Connect(string theHostname = "")
+        {
+            m_NetworkThread = new Thread(new ThreadStart(this.Start));
+            m_NetworkThread.Start();
         }
     }
 }
