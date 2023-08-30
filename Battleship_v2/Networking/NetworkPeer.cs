@@ -76,7 +76,11 @@ namespace Battleship_v2.Networking
         /// </summary>
         public void Stop()
         {
-            m_NetworkThread.Abort();
+            try
+            {
+                m_NetworkThread.Abort();
+            }
+            catch (ThreadAbortException) { }
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using Battleship_v2.Services;
+using System;
+using System.ComponentModel;
+using System.Windows;
 
 namespace Battleship_v2
 {
@@ -10,6 +13,13 @@ namespace Battleship_v2
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            NetworkService.Instance.Close();
+
+            base.OnClosing(e);
         }
     }
 }

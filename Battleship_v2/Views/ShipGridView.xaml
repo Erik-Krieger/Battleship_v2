@@ -47,7 +47,7 @@
         <DataGrid
             Name="dgSimple"
             AutoGenerateColumns="True"
-            ItemsSource="{Binding Grid}"
+            ItemsSource="{Binding Grid,UpdateSourceTrigger=PropertyChanged}"
             IsReadOnly="True"
             CanUserResizeColumns="False"
             CanUserResizeRows="False"

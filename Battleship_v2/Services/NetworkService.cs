@@ -61,5 +61,15 @@ namespace Battleship_v2.Services
 
             NetworkPeer.Connect(theHostname);
         }
+
+        public void Close()
+        {
+            if (NetworkPeer is null)
+            {
+                return;
+            }
+
+            NetworkPeer.Stop();
+        }
     }
 }

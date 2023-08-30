@@ -84,6 +84,7 @@
     <Compile Include="Ships\Ship.cs" />
     <Compile Include="Utility\Tiles.cs" />
     <Compile Include="Networking\WebSocketServer.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\HostMenuViewModel.cs" />
     <Compile Include="ViewModels\JoinMenuViewModel.cs" />
