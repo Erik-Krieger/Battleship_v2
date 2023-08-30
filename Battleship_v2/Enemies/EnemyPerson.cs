@@ -1,6 +1,8 @@
 ﻿using Battleship_v2.Networking;
 using Battleship_v2.Services;
 using Battleship_v2.Utility;
+using System;
+using System.Windows;
 
 namespace Battleship_v2.Enemies
 {
@@ -60,8 +62,12 @@ namespace Battleship_v2.Enemies
             // Disable the Event handler.
             eventEnabled = false;
 
-            // Play the move.
-            GameManagerService.Instance.PlayNextMove(aPosition);
+            // Play the move, this construct is used to execute the operation on the main Thread.
+            // This needs to be done, so that the Converter in the UI is triggered.
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                GameManagerService.Instance.PlayNextMove(aPosition);
+            }));
         }
 
         /// <summary>

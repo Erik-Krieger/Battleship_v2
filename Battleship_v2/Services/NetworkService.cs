@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Battleship_v2.Services
 {
@@ -47,6 +49,7 @@ namespace Battleship_v2.Services
         public void OpenServer()
         {
             NetworkPeer = new WebSocketServer();
+
             NetworkPeer.Connect("");
         }
 
@@ -55,9 +58,12 @@ namespace Battleship_v2.Services
         /// </summary>
         public void CloseServer() { }
 
-        public void JoinServer(string theHostname)
+        public async void JoinServer(string theHostname)
         {
-            NetworkPeer = new WebSocketClient();
+            await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                NetworkPeer = new WebSocketClient();
+            }));
 
             NetworkPeer.Connect(theHostname);
         }

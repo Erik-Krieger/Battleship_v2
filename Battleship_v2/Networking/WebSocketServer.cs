@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows;
 
 namespace Battleship_v2.Networking
 {
@@ -70,7 +71,11 @@ namespace Battleship_v2.Networking
                     m_Stream.Write(response, 0, response.Length);
 
                     // Set the NetworkPeer State to connected
-                    PeerConnected = true;
+                    //
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        PeerConnected = true;
+                    }));
                 }
                 else
                 {
