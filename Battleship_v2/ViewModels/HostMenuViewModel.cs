@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Battleship_v2.ViewModels
 {
-    public class HostMenuViewModel
+    public sealed class HostMenuViewModel : BaseViewModel
     {
         public ICommand CmdBegin
         {

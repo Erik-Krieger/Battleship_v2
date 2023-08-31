@@ -6,30 +6,35 @@ using System.Windows.Input;
 
 namespace Battleship_v2.ViewModels
 {
-    public class JoinMenuViewModel : BaseViewModel
+    public sealed class JoinMenuViewModel : BaseViewModel
     {
         public string Hostname { get; set; } = string.Empty;
 
         public ICommand CmdJoin
         {
-            get => m_CmdJoin ?? new CommandHandler(() => Connect(), () => Hostname != "");
+            get => m_CmdJoin ?? new CommandHandler(() => connect(), () => Hostname != "");
         }
         private ICommand m_CmdJoin;
 
         public ICommand CmdBackToMenu
         {
-            get => m_CmdBackToMenu ?? new CommandHandler(() => { WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MainMenuViewModel(); });
+            get => m_CmdBackToMenu ?? new CommandHandler(() => WindowManagerService.ChangeView(new MainMenuViewModel()));
         }
         private ICommand m_CmdBackToMenu;
 
         public JoinMenuViewModel() { }
 
-        public void Connect()
+        private void connect()
         {
             NetworkService.Instance.JoinServer(Hostname);
             GameManagerService.Instance.SelectDifficulty(Difficulty.Person);
 
-            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel();
+            //WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel();
+        }
+
+        public void BeginGame()
+        {
+            WindowManagerService.ChangeView(new GameViewModel());
         }
     }
 }

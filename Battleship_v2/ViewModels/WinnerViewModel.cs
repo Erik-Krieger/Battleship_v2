@@ -1,6 +1,6 @@
 ﻿namespace Battleship_v2.ViewModels
 {
-    public class WinnerViewModel
+    public sealed class WinnerViewModel : BaseViewModel
     {
         public WinnerViewModel() { }
     }

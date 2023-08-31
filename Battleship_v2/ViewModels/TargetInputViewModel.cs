@@ -5,7 +5,7 @@ using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
-    public class TargetInputViewModel : PropertyChangeHandler
+    public sealed class TargetInputViewModel : BaseViewModel
     {
         private string m_TargetString = string.Empty;
         public TargetInputModel Model { get; set; }

@@ -1,17 +1,16 @@
 ﻿using Battleship_v2.Models;
 using Battleship_v2.Services;
-using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
-    public class GameViewModel : PropertyChangeHandler
+    public sealed class GameViewModel : BaseViewModel
     {
         private GameModel m_GameModel;
 
-        public ShipGridViewModel OwnGrid { get; set; } = new ShipGridViewModel( PlayerType.You );
+        public ShipGridViewModel OwnGrid { get; set; } = new ShipGridViewModel(PlayerType.You);
         private ShipGridViewModel m_OwnGrid;
 
-        public ShipGridViewModel EnemyGrid { get; set; } = new ShipGridViewModel( PlayerType.Enemy );
+        public ShipGridViewModel EnemyGrid { get; set; } = new ShipGridViewModel(PlayerType.Enemy);
         private ShipGridViewModel m_EnemyGrid;
 
         public TargetInputViewModel TargetInput { get; set; } = new TargetInputViewModel();
@@ -19,7 +18,7 @@ namespace Battleship_v2.ViewModels
 
         public GameViewModel()
         {
-            m_GameModel = new GameModel( this );
+            m_GameModel = new GameModel(this);
         }
     }
 }

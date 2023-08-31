@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Battleship_v2.Models;
+using Battleship_v2.Services;
+using Battleship_v2.Ships;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Windows.Controls;
-using Battleship_v2.Models;
-using Battleship_v2.Services;
-using Battleship_v2.Ships;
-using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
-    public class ShipGridViewModel : PropertyChangeHandler
+    public sealed class ShipGridViewModel : BaseViewModel
     {
         public ShipGridModel Model { get; set; }
         public PlayerType Owner { get; }

@@ -4,14 +4,14 @@ using Battleship_v2.Utility;
 
 namespace Battleship_v2.ViewModels
 {
-    public class GameOverViewModel
+    public sealed class GameOverViewModel : BaseViewModel
     {
         public object GameStatusPanel { get; set; }
 
-        public ICommand CmdPlayAgain { get => m_CmdPlayAgain ?? new CommandHandler( () => { } ); }
+        public ICommand CmdPlayAgain { get => m_CmdPlayAgain ?? new CommandHandler( () => playAgain() ); }
         private ICommand m_CmdPlayAgain;
 
-        public ICommand CmdGoToMenu { get => m_CmdGoToMenu ?? new CommandHandler( () => { } ); }
+        public ICommand CmdGoToMenu { get => m_CmdGoToMenu ?? new CommandHandler(() => WindowManagerService.ChangeView(new MainMenuViewModel())); }
         private ICommand m_CmdGoToMenu;
 
         public GameOverViewModel(bool isWinner)
@@ -29,11 +29,6 @@ namespace Battleship_v2.ViewModels
         private void playAgain()
         {
             // This will change
-            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MainMenuViewModel();
-        }
-
-        private void backToMenu()
-        {
             WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new MainMenuViewModel();
         }
     }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Battleship_v2.Services;
-using Battleship_v2.Utility;
+﻿using Battleship_v2.Services;
 
 namespace Battleship_v2.ViewModels
 {
-    public class NavigationViewModel : PropertyChangeHandler
+    public sealed class NavigationViewModel : BaseViewModel
     {
         private object m_SelectedViewModel;
 
