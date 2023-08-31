@@ -14,5 +14,16 @@ namespace Battleship_v2.Services
         {
             NavigationViewModel = theViewModel;
         }
+
+        public static void ChangeView(BaseViewModel theViewModel)
+        {
+            if (theViewModel is null)
+            {
+                return;
+            }
+
+            // We do this to make calls to ChangeView more concise.
+            WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = theViewModel;
+        }
     }
 }
