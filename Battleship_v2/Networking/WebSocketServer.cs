@@ -45,9 +45,9 @@ namespace Battleship_v2.Networking
                 // Keep checking until it has 3 bytes.
                 while (m_TcpClient.Available < 3) ; // match against "get"
 
-                byte[] bytes = new byte[m_TcpClient.Available];
-                m_Stream.Read(bytes, 0, bytes.Length);
-                string s = Encoding.UTF8.GetString(bytes);
+                byte[] aByteArray = new byte[m_TcpClient.Available];
+                m_Stream.Read(aByteArray, 0, aByteArray.Length);
+                string s = Encoding.UTF8.GetString(aByteArray);
 
                 if (Regex.IsMatch(s, "^GET", RegexOptions.IgnoreCase))
                 {
@@ -78,40 +78,40 @@ namespace Battleship_v2.Networking
                 }
                 else
                 {
-                    bool fin = (bytes[0] & 0b10000000) != 0,
-                        mask = (bytes[1] & 0b10000000) != 0; // must be true, "All messages from the client to the server have this bit set"
-                    int opcode = bytes[0] & 0b00001111, // expecting 1 - text message
-                        offset = 2;
-                    ulong msglen = (ulong)bytes[1] & 0b01111111;
+                    bool fin = (aByteArray[0] & 0b10000000) != 0,
+                        mask = (aByteArray[1] & 0b10000000) != 0; // must be true, "All messages from the client to the server have this bit set"
+                    int opcode = aByteArray[0] & 0b00001111, // expecting 1 - text message
+                        anOffset = 2;
+                    ulong aMessageLength = (ulong)aByteArray[1] & 0b01111111;
 
-                    if (msglen == 126)
+                    if (aMessageLength == 126)
                     {
                         // bytes are reversed because websocket will print them in Big-Endian, whereas
                         // BitConverter will want them arranged in little-endian on windows
-                        msglen = BitConverter.ToUInt16(new byte[] { bytes[3], bytes[2] }, 0);
-                        offset = 4;
+                        aMessageLength = BitConverter.ToUInt16(new byte[] { aByteArray[3], aByteArray[2] }, 0);
+                        anOffset = 4;
                     }
-                    else if (msglen == 127)
+                    else if (aMessageLength == 127)
                     {
                         // To test the below code, we need to manually buffer larger messages — since the NIC's autobuffering
                         // may be too latency-friendly for this code to run (that is, we may have only some of the bytes in this
                         // websocket frame available through client.Available).
-                        msglen = BitConverter.ToUInt64(new byte[] { bytes[9], bytes[8], bytes[7], bytes[6], bytes[5], bytes[4], bytes[3], bytes[2] }, 0);
-                        offset = 10;
+                        aMessageLength = BitConverter.ToUInt64(new byte[] { aByteArray[9], aByteArray[8], aByteArray[7], aByteArray[6], aByteArray[5], aByteArray[4], aByteArray[3], aByteArray[2] }, 0);
+                        anOffset = 10;
                     }
 
-                    if (msglen == 0)
+                    if (aMessageLength == 0)
                     {
                         Debug.WriteLine("msglen == 0");
                     }
                     else if (mask)
                     {
-                        byte[] decoded = new byte[msglen];
-                        byte[] masks = new byte[4] { bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3] };
-                        offset += 4;
+                        byte[] decoded = new byte[aMessageLength];
+                        byte[] aBitmaskArray = new byte[4] { aByteArray[anOffset], aByteArray[anOffset + 1], aByteArray[anOffset + 2], aByteArray[anOffset + 3] };
+                        anOffset += 4;
 
-                        for (ulong i = 0; i < msglen; ++i)
-                            decoded[i] = (byte)(bytes[offset + (int)i] ^ masks[i % 4]);
+                        for (ulong i = 0; i < aMessageLength; ++i)
+                            decoded[i] = (byte)(aByteArray[anOffset + (int)i] ^ aBitmaskArray[i % 4]);
 
                         string text = Encoding.UTF8.GetString(decoded);
                         //Debug.WriteLine($"{text}");
