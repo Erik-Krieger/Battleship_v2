@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Battleship_v2.Networking
 {
@@ -56,26 +57,24 @@ namespace Battleship_v2.Networking
                     // 2. Concatenate it with "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" (a special GUID specified by RFC 6455)
                     // 3. Compute SHA-1 and Base64 hash of the new value
                     // 4. Write the hash back as the value of "Sec-WebSocket-Accept" response header in an HTTP response
-                    string swk = Regex.Match(s, "Sec-WebSocket-Key: (.*)").Groups[1].Value.Trim();
-                    string swka = swk + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-                    byte[] swkaSha1 = System.Security.Cryptography.SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(swka));
-                    string swkaSha1Base64 = Convert.ToBase64String(swkaSha1);
+                    string aSecureWebSocketKey = Regex.Match(s, "Sec-WebSocket-Key: (.*)").Groups[1].Value.Trim();
+                    aSecureWebSocketKey += "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+                    byte[] aSecureWebSocketKeyHash = System.Security.Cryptography.SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(aSecureWebSocketKey));
+                    string aSecureWebSocketKeyHashAsBase64 = Convert.ToBase64String(aSecureWebSocketKeyHash);
 
                     // HTTP/1.1 defines the sequence CR LF as the end-of-line marker
                     byte[] response = Encoding.UTF8.GetBytes(
                         "HTTP/1.1 101 Switching Protocols\r\n" +
                         "Connection: Upgrade\r\n" +
                         "Upgrade: websocket\r\n" +
-                        "Sec-WebSocket-Accept: " + swkaSha1Base64 + "\r\n\r\n");
+                        "Sec-WebSocket-Accept: " + aSecureWebSocketKeyHashAsBase64 + "\r\n\r\n");
 
                     m_Stream.Write(response, 0, response.Length);
 
-                    // Set the NetworkPeer State to connected
-                    //
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        PeerConnected = true;
-                    }));
+                    // Set the PeerConnected flag to true
+                    PeerConnected = true;
+                    // Reload the CommandManager, to activate the Play Button immediately.
+                    CommandManager.InvalidateRequerySuggested();
                 }
                 else
                 {

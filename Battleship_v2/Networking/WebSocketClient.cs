@@ -61,18 +61,23 @@ namespace Battleship_v2.Networking
             sendMessageAsync(theMessage);
         }
         
+        private async void connect(string theHostname)
+        {
+            var aUri = new Uri($"ws://{theHostname}");
+
+            await webSocket.ConnectAsync(aUri, default);
+
+            m_NetworkThread = new Thread(new ThreadStart(receiveMessage));
+            m_NetworkThread.Start();
+        }
+
         /// <summary>
         /// This is the Method used to start the WebSocketClient and it's thread.
         /// </summary>
         /// <param name="theHostname">The Hostname of the Server Machine, this can also be an IP-Address</param>
         public override void Connect(string theHostname)
         {
-            var aUri = new Uri($"ws://{theHostname}");
-
-            webSocket.ConnectAsync(aUri, default);
-
-            m_NetworkThread = new Thread(new ThreadStart(receiveMessage));
-            m_NetworkThread.Start();
+            connect(theHostname);
         }
     }
 }
