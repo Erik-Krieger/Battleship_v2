@@ -1,4 +1,6 @@
-﻿using Battleship_v2.Utility;
+﻿using Battleship_v2.Services;
+using Battleship_v2.Utility;
+using Battleship_v2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,6 +57,21 @@ namespace Battleship_v2.Networking
             if (string.IsNullOrEmpty(theMessage))
             {
                 return;
+            }
+
+            // This is a hacky workaround
+            if (theMessage.StartsWith("start-game"))
+            {
+                if (NetworkService.Instance.NetworkPeer is WebSocketClient)
+                {
+                    var jm = WindowManagerService.Instance.NavigationViewModel.SelectedViewModel;
+
+                    if (jm is JoinMenuViewModel)
+                    {
+                        ((JoinMenuViewModel)jm).BeginGame();
+                        return;
+                    }
+                }
             }
 
             lock (MessageQueue)

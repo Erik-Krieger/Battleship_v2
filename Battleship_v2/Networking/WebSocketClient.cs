@@ -63,7 +63,7 @@ namespace Battleship_v2.Networking
         
         private async void connect(string theHostname)
         {
-            var aUri = new Uri($"ws://{theHostname}");
+            var aUri = new Uri($"ws://{theHostname}:{PORT}");
 
             await webSocket.ConnectAsync(aUri, default);
 

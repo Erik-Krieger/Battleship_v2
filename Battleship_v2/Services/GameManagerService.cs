@@ -99,6 +99,16 @@ namespace Battleship_v2.Services
         private GameManagerService() { }
 
         /// <summary>
+        /// Picks who goes first a random
+        /// </summary>
+        /// <returns></returns>
+        public PlayerType SetFirstTurnRandom()
+        {
+            m_CurrentTurn = aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
+            return m_CurrentTurn;
+        }
+
+        /// <summary>
         /// Converts any letter into an integer beginning at 0 disregarding case.
         /// </summary>
         /// <param name="theLetter">The letter to be converted</param>

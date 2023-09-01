@@ -53,11 +53,6 @@ namespace Battleship_v2.Services
             NetworkPeer.Connect("");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void CloseServer() { }
-
         public async void JoinServer(string theHostname)
         {
             await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
