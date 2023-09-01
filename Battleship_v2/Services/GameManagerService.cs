@@ -39,16 +39,7 @@ namespace Battleship_v2.Services
         public PlayerType CurrentTurn
         {
             get => m_CurrentTurn;
-            set
-            {
-                if (m_CurrentTurn == value) return;
-                m_CurrentTurn = value;
-                if (m_CurrentTurn == PlayerType.Enemy)
-                {
-                    PlayNextMove();
-                }
-                NotifyPropertyChanged(nameof(CurrentTurn));
-            }
+            set => SetProperty(ref m_CurrentTurn, value);
         }
         private PlayerType m_CurrentTurn = PlayerType.You; //= aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
 
@@ -104,8 +95,26 @@ namespace Battleship_v2.Services
         /// <returns></returns>
         public PlayerType SetFirstTurnRandom()
         {
-            m_CurrentTurn = aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
-            return m_CurrentTurn;
+            /*CurrentTurn = aRng.Next() % 2 == 0 ? PlayerType.You : PlayerType.Enemy;
+            return CurrentTurn;*/
+            CurrentTurn = PlayerType.You;
+            return CurrentTurn;
+        }
+
+        public void SetFirstTurnFromInt(int thePlayerType)
+        {
+            if (thePlayerType == (int)PlayerType.You)
+            {
+                CurrentTurn = PlayerType.You;
+            }
+            else if (thePlayerType == (int)PlayerType.Enemy)
+            {
+                CurrentTurn = PlayerType.Enemy;
+            }
+            else
+            {
+                throw new ArgumentException($"The value of the playerType can only be 0 or 1, {thePlayerType} is an invalid input", nameof(thePlayerType));
+            }
         }
 
         /// <summary>
@@ -239,6 +248,11 @@ namespace Battleship_v2.Services
         private void changeTurns()
         {
             CurrentTurn = CurrentTurn == PlayerType.Enemy ? PlayerType.You : PlayerType.Enemy;
+
+            if (CurrentTurn == PlayerType.Enemy)
+            {
+                PlayNextMove();
+            }
         }
 
         /// <summary>

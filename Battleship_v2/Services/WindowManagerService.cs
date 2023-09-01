@@ -25,5 +25,21 @@ namespace Battleship_v2.Services
             // We do this to make calls to ChangeView more concise.
             WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = theViewModel;
         }
+
+        public static void OpenMainMenu()
+        {
+            // Make Sure the NetworkThread is terminated.
+            NetworkService.Instance.Close();
+            // Change the view
+            ChangeView(new MainMenuViewModel());
+        }
+
+        public static void OpenMultiplayerMenu()
+        {
+            // Make sure the NetworkThread is terminated.
+            NetworkService.Instance.Close();
+            // Change the View
+            ChangeView(new MultiplayerSetupViewModel());
+        }
     }
 }

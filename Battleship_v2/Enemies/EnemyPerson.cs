@@ -8,7 +8,7 @@ namespace Battleship_v2.Enemies
 {
     public class EnemyPerson : Enemy
     {
-        private bool eventEnabled = false;
+        public bool EventEnabled = false;
 
         public EnemyPerson() { }
 
@@ -29,7 +29,7 @@ namespace Battleship_v2.Enemies
                 }
 
                 // Enable the event handler.
-                eventEnabled = true;
+                EventEnabled = true;
 
                 return null;
             }
@@ -42,7 +42,7 @@ namespace Battleship_v2.Enemies
         {
             // If the Event handler hasn't been enabled, don't do anything
             // This is needed to prevent the opponent to make moves, when it's our turn.
-            if (!eventEnabled)
+            if (!EventEnabled)
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace Battleship_v2.Enemies
             var aPosition = parsePositionString(aMessage);
 
             // Disable the Event handler.
-            eventEnabled = false;
+            EventEnabled = false;
 
             // Play the move, this construct is used to execute the operation on the main Thread.
             // This needs to be done, so that the Converter in the UI is triggered.

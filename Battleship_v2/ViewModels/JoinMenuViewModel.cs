@@ -8,7 +8,7 @@ namespace Battleship_v2.ViewModels
 {
     public sealed class JoinMenuViewModel : BaseViewModel
     {
-        public string Hostname { get; set; } = string.Empty;
+        public string Hostname { get; set; } = "127.0.0.1";
 
         public ICommand CmdJoin
         {
@@ -16,24 +16,21 @@ namespace Battleship_v2.ViewModels
         }
         private ICommand m_CmdJoin;
 
-        public ICommand CmdBackToMenu
-        {
-            get => m_CmdBackToMenu ?? new CommandHandler(() => WindowManagerService.ChangeView(new MainMenuViewModel()));
-        }
-        private ICommand m_CmdBackToMenu;
-
         public JoinMenuViewModel() { }
 
         private void connect()
         {
             NetworkService.Instance.JoinServer(Hostname);
             GameManagerService.Instance.SelectDifficulty(Difficulty.Person);
-
-            //WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameViewModel();
         }
 
         public void BeginGame()
         {
+            //
+            ((EnemyPerson)GameManagerService.Instance.Opponent).InjectNetworkPeer(NetworkService.Instance.NetworkPeer);
+            //
+            ((EnemyPerson)GameManagerService.Instance.Opponent).EventEnabled = !GameManagerService.Instance.YourTurn;
+            // Change the View to display the main Game Screen.
             WindowManagerService.ChangeView(new GameViewModel());
         }
     }

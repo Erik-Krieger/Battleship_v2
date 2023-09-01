@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleship_v2.Services;
+using System;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
@@ -26,23 +27,25 @@ namespace Battleship_v2.Networking
         private async void receiveMessage()
         {
             // Create a read buffer with a size of 4kb.
-            byte[] aByteArray = new byte[4096];
+            byte[] aByteArray = new byte[256];
             ArraySegment<byte> aBuffer = new ArraySegment<byte>(aByteArray);
 
             // Run the loop forever.
             while (true)
             {
                 // Wait for message to be received.
-                var aResponse = await webSocket.ReceiveAsync(aBuffer, default);
+                var aResponse = await webSocket.ReceiveAsync(aBuffer, m_CancelToken.Token);
                 
                 // Check if the Message is not null
                 if (!(aResponse is null))
                 {
                     // Convert the Message to a String.
-                    string aMessage = aBuffer.ToString();
+                    string aMessage = Encoding.UTF8.GetString(aByteArray);
                     // Add the String to the Message Queue.
                     addMessageToQueue(aMessage);
                 }
+
+                Array.Clear(aByteArray, 0, aByteArray.Length);
             }
         }
 
@@ -63,12 +66,16 @@ namespace Battleship_v2.Networking
         
         private async void connect(string theHostname)
         {
-            var aUri = new Uri($"ws://{theHostname}:{PORT}");
+            var aUri = new Uri($"ws://{theHostname}:{NetworkService.PORT}");
 
-            await webSocket.ConnectAsync(aUri, default);
+            await webSocket.ConnectAsync(aUri, m_CancelToken.Token);
+
+            Debug.WriteLine("Connected");
 
             m_NetworkThread = new Thread(new ThreadStart(receiveMessage));
             m_NetworkThread.Start();
+
+            Debug.WriteLine("Started seperate thread.");
         }
 
         /// <summary>

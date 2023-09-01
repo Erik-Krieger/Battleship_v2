@@ -13,31 +13,37 @@ namespace Battleship_v2.ViewModels
         }
         private ICommand m_CmdBegin;
 
-        public ICommand CmdBackToMenu
-        {
-            get => m_CmdBackToMenu ?? new CommandHandler(() => backToMenu());
-        }
-        private ICommand m_CmdBackToMenu;
-
+        /// <summary>
+        /// The default constructor for the HostMenuViewModel
+        /// </summary>
         public HostMenuViewModel()
         {
+            // Start the WebSocketServer
             NetworkService.Instance.OpenServer();
+
+            // Set the difficulty to person, to tell the game that we're going against another human
             GameManagerService.Instance.SelectDifficulty(Difficulty.Person);
 
+            // Set the NetworkPeer to the WebSocketServer
             ((EnemyPerson)GameManagerService.Instance.Opponent).InjectNetworkPeer(NetworkService.Instance.NetworkPeer);
         }
 
         private void startGame()
         {
+            // let chance decide who begins.
             var aTurn = GameManagerService.Instance.SetFirstTurnRandom();
-            NetworkService.Instance.NetworkPeer.SendMessage($"start-game,{(int)aTurn}");
-            WindowManagerService.ChangeView(new GameViewModel());
-        }
+            // Invert aTurn, because we need to send the opposite value of what we're storing to the client.
+            aTurn = aTurn == PlayerType.You ? PlayerType.Enemy : PlayerType.You;
 
-        private void backToMenu()
-        {
-            WindowManagerService.ChangeView(new MultiplayerSetupViewModel());
-            NetworkService.Instance.Close();
+            // Send the start-game message to the connected client and include an integer indicating, who makes the fist turn.
+            NetworkService.Instance.NetworkPeer.SendMessage($"start-game,{(int)aTurn}");
+
+            // We have to enable the event, in case our opponent makes the first turn, to activate the event listener.
+            // If this is not done Network messages will just be ignored.
+            ((EnemyPerson)GameManagerService.Instance.Opponent).EventEnabled = !GameManagerService.Instance.YourTurn;
+
+            // Change the current View to the main game view.
+            WindowManagerService.ChangeView(new GameViewModel());
         }
     }
 }

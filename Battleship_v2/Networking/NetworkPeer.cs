@@ -6,14 +6,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows.Input;
 
 namespace Battleship_v2.Networking
 {
     public abstract class NetworkPeer : PropertyChangeHandler
     {
-        public const int PORT = 1337;
-
         protected private Thread m_NetworkThread {  get; set; }
+
+        protected private CancellationTokenSource m_CancelToken = new CancellationTokenSource();
 
         public bool PeerConnected
         {
@@ -52,8 +53,13 @@ namespace Battleship_v2.Networking
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theMessage"></param>
         protected private void addMessageToQueue(string theMessage)
         {
+            // Cancel processing if the message is null or empty.
             if (string.IsNullOrEmpty(theMessage))
             {
                 return;
@@ -68,7 +74,16 @@ namespace Battleship_v2.Networking
 
                     if (jm is JoinMenuViewModel)
                     {
-                        ((JoinMenuViewModel)jm).BeginGame();
+                        string[] aPartsArray = theMessage.Split(',');
+                        if (aPartsArray.Length > 1)
+                        {
+                            if (int.TryParse(aPartsArray[1], out int aTurnIndex))
+                            {
+                                GameManagerService.Instance.SetFirstTurnFromInt(aTurnIndex);
+                                ((JoinMenuViewModel)jm).BeginGame();
+                                CommandManager.InvalidateRequerySuggested();
+                            }
+                        }
                         return;
                     }
                 }
@@ -79,7 +94,7 @@ namespace Battleship_v2.Networking
                 MessageQueue.Add(theMessage);
             }
 
-            Debug.WriteLine(theMessage);
+            Debug.WriteLine(theMessage + "\n");
 
             OnMessage?.Invoke();
         }
@@ -91,8 +106,12 @@ namespace Battleship_v2.Networking
         /// <summary>
         /// Terminates the Websocket Thread.
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
+            // Cancel the WebSocketConnections
+            m_CancelToken.Cancel();
+
+            // Try terminating the NetworkThread.
             try
             {
                 m_NetworkThread.Abort();
