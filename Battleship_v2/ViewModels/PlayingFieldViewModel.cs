@@ -8,9 +8,9 @@ using System.Windows.Controls;
 
 namespace Battleship_v2.ViewModels
 {
-    public sealed class ShipGridViewModel : BaseViewModel
+    public sealed class PlayingFieldViewModel : BaseViewModel
     {
-        public ShipGridModel Model { get; set; }
+        public PlayingFieldModel Model { get; set; }
         public PlayerType Owner { get; }
         private GameManagerService m_GameManager;
 
@@ -37,10 +37,10 @@ namespace Battleship_v2.ViewModels
 
         public List<Ship> Ships { get; set; }
 
-        public ShipGridViewModel(PlayerType theOwner, List<ushort> theShipList)
+        public PlayingFieldViewModel(PlayerType theOwner, List<ushort> theShipList)
         {
             Owner = theOwner;
-            Model = new ShipGridModel(this, theOwner == PlayerType.You, theShipList);
+            Model = new PlayingFieldModel(this, theOwner == PlayerType.You, theShipList);
             if (theOwner == PlayerType.You)
             {
                 //Model.DrawAllShips();

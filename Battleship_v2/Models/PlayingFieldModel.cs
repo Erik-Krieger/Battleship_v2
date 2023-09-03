@@ -11,7 +11,7 @@ using System.Windows.Controls;
 
 namespace Battleship_v2.Models
 {
-    public class ShipGridModel : PropertyChangeHandler
+    public class PlayingFieldModel : PropertyChangeHandler
     {
         public const int GRID_SIZE = 10;
 
@@ -21,10 +21,10 @@ namespace Battleship_v2.Models
         // therefore creating this race condition.
         private int m_RandomSeed = (int)DateTime.UtcNow.Ticks;
 
-        public ShipGridViewModel ViewModel { get; private set; }
+        public PlayingFieldViewModel ViewModel { get; private set; }
 
         // This keeps track, if the Grid is owned by the player or the opponent.
-        public ShipGridModel(ShipGridViewModel theViewModel, bool isOwn, List<ushort> theShipList)
+        public PlayingFieldModel(PlayingFieldViewModel theViewModel, bool isOwn, List<ushort> theShipList)
         {
             ViewModel = theViewModel;
 

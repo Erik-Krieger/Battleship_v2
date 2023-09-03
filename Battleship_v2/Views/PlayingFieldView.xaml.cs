@@ -6,13 +6,11 @@ namespace Battleship_v2.Views
     /// <summary>
     /// Interaction logic for ShipGridView.xaml
     /// </summary>
-    public partial class ShipGridView : UserControl
+    public partial class PlayingFieldView : UserControl
     {
-        public ShipGridView()
+        public PlayingFieldView()
         {
             InitializeComponent();
-
-            //DataContext = new ShipGridViewModel();
         }
     }
 }

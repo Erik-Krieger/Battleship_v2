@@ -52,8 +52,8 @@ namespace Battleship_v2.Services
 
         public bool YourTurn { get => CurrentTurn == PlayerType.You; }
 
-        public ShipGridModel OwnGrid { get; set; }
-        public ShipGridModel EnemyGrid { get; set; }
+        public PlayingFieldModel OwnGrid { get; set; }
+        public PlayingFieldModel EnemyGrid { get; set; }
         public TargetInputModel TargetInput { get; set; }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Battleship_v2.Services
         /// <param name="theModel"></param>
         /// <param name="isOwnGrid"></param>
         /// <returns></returns>
-        public GameManagerService InjectShipGridModel(ShipGridModel theModel, bool isOwnGrid = true)
+        public GameManagerService InjectShipGridModel(PlayingFieldModel theModel, bool isOwnGrid = true)
         {
             if (isOwnGrid)
             {
@@ -208,7 +208,7 @@ namespace Battleship_v2.Services
         /// </summary>
         /// <param name="theMove">The move to play</param>
         /// <param name="theGrid">The Board to make the move on</param>
-        private void processShot(Position theMove, ShipGridModel theGrid)
+        private void processShot(Position theMove, PlayingFieldModel theGrid)
         {
             // Checks if the move is valid, if not the turn is over without playing a move.
             if (!theMove.IsValid())

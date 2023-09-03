@@ -103,7 +103,7 @@
     <Compile Include="Models\TargetInputModel.cs" />
     <Compile Include="Utility\Position.cs" />
     <Compile Include="Utility\PropertyChangeHandler.cs" />
-    <Compile Include="Models\ShipGridModel.cs" />
+    <Compile Include="Models\PlayingFieldModel.cs" />
     <Compile Include="Services\GameManagerService.cs" />
     <Compile Include="Ships\Submarine.cs" />
     <Compile Include="Ships\Destroyer.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="ViewModels\NavigationViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
-    <Compile Include="ViewModels\ShipGridViewModel.cs" />
+    <Compile Include="ViewModels\PlayingFieldViewModel.cs" />
     <Compile Include="ViewModels\SingleplayerSetupViewModel.cs" />
     <Compile Include="ViewModels\TargetInputViewModel.cs" />
     <Compile Include="ViewModels\WinnerViewModel.cs" />
@@ -150,8 +150,8 @@
     <Compile Include="Views\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ShipGridView.xaml.cs">
-      <DependentUpon>ShipGridView.xaml</DependentUpon>
+    <Compile Include="Views\PlayingFieldView.xaml.cs">
+      <DependentUpon>PlayingFieldView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SingleplayerSetupView.xaml.cs">
       <DependentUpon>SingleplayerSetupView.xaml</DependentUpon>
@@ -206,7 +206,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ShipGridView.xaml">
+    <Page Include="Views\PlayingFieldView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -56,7 +56,7 @@ namespace Battleship_v2.Utility
 
         public bool IsValid()
         {
-            return ( X >= 0 && X < ShipGridModel.GRID_SIZE && Y >= 0 && Y < ShipGridModel.GRID_SIZE );
+            return ( X >= 0 && X < PlayingFieldModel.GRID_SIZE && Y >= 0 && Y < PlayingFieldModel.GRID_SIZE );
         }
 
         public void Swap()
