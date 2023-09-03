@@ -184,6 +184,8 @@ namespace Battleship_v2.Services
 
         /// <summary>
         /// This Method handles the shot processing, when you yourself fire.
+        /// It takes a string in the format <Letter><Number>
+        /// where the Letter has to be in the range [A-J] and the number in the range [1-10]
         /// </summary>
         /// <param name="theTargetString"></param>
         public void ProcessShot(string theTargetString)
@@ -195,6 +197,25 @@ namespace Battleship_v2.Services
             }
 
             // Play the move.
+            processShot(aMove, EnemyGrid);
+
+            if (Opponent is EnemyPerson)
+            {
+                NetworkService.Instance.NetworkPeer.SendMessage(aMove.ToMessage());
+            }
+        }
+
+        /// <summary>
+        /// This Method handles the shot processing, when you yourself fire.
+        /// It takes to integers indicating the X- and Y-Position of the shot.
+        /// where the values have to be in the range [0-9].
+        /// </summary>
+        /// <param name="theXPos"></param>
+        /// <param name="theYPos"></param>
+        public void ProcessShot(int theXPos, int theYPos)
+        {
+            Position aMove = new Position(theXPos, theYPos);
+
             processShot(aMove, EnemyGrid);
 
             if (Opponent is EnemyPerson)
@@ -221,8 +242,10 @@ namespace Battleship_v2.Services
             // Iterating through all ships not yet sunk.
             foreach (Ship aShip in theGrid.ViewModel.Ships)
             {
+                HitType aHitType = aShip.IsHit(theMove);
+
                 // Check to see, if the move is a hit on the current ship.
-                if (aShip.IsHit(theMove))
+                if (aHitType == HitType.Hit)
                 {
                     // Check if that hit caused the ship to sink.
                     if (aShip.IsSunk())
@@ -237,6 +260,20 @@ namespace Battleship_v2.Services
                     }
 
                     // Change turns.
+                    changeTurns();
+                    return;
+                }
+                else if (aHitType == HitType.Repeat)
+                {
+                    // This will internally call the underlying DataTable and force in to update
+                    // even though nothing has actually changed.
+                    // This is needed to fix a weird bug, where when repeatedly clicking a cell that was marked as a hit before,
+                    // the game wouldn't proceed after the second click on that cell until you click anyother cell.
+                    // And for some reason, I do not even begin to grasp, this line fixes that.
+                    // WPF is definitely weird.
+                    theGrid.AcceptChanges();
+
+                    // Change turns
                     changeTurns();
                     return;
                 }
@@ -347,13 +384,6 @@ namespace Battleship_v2.Services
 
             // This will do an in place modification of the positions.
             placeShipsRandomly(aList);
-
-            //int index = 0;
-            foreach (var a in aList)
-            {
-                ushort bitField = a.ToBitField();
-                //Debug.WriteLine($"{++index}: {bitField}");
-            }
 
             return aList;
         }

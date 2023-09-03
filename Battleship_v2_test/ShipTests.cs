@@ -17,7 +17,7 @@ namespace Battleship_v2_test
             var aPos = new Position(0, 0);
             aShip.SetShipValues(aPos, Orientation.Horizontal, false);
             var bPos = new Position(4, 0);
-            Assert.AreEqual(aShip.IsHit(bPos), true);
+            Assert.AreEqual(aShip.IsHit(bPos), HitType.Hit);
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace Battleship_v2_test
             var aPos = new Position(0, 0);
             aShip.SetShipValues(aPos, Orientation.Horizontal, false);
             var bPos = new Position(5, 0);
-            Assert.AreEqual(aShip.IsHit(bPos), false);
+            Assert.AreEqual(aShip.IsHit(bPos), HitType.Hit);
         }
 
         [TestMethod]

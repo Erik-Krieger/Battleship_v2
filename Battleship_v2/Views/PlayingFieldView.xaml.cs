@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics.Contracts;
+using System.Windows.Controls;
 using Battleship_v2.ViewModels;
 
 namespace Battleship_v2.Views

@@ -19,10 +19,6 @@ namespace Battleship_v2.Enemies
     {
         protected Random aRng = new Random();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected Position m_LastMove;
         protected List<Position> m_ValidMoves;
 
         public Enemy()
@@ -38,5 +34,14 @@ namespace Battleship_v2.Enemies
         }
 
         public abstract Position NextMove();
+
+        protected private Position getRandomMove()
+        {
+            int anIndex = aRng.Next(m_ValidMoves.Count);
+            Position aMove = m_ValidMoves[anIndex];
+            m_ValidMoves.RemoveAt(anIndex);
+            
+            return aMove;
+        }
     }
 }

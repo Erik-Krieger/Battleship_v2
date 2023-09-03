@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using Battleship_v2.Models;
 using Battleship_v2.Services;
 
@@ -82,6 +83,42 @@ namespace Battleship_v2.Utility
             return theOrientation == Orientation.Horizontal ? new Position( X + theDirection, Y ) : new Position( X, Y + theDirection );
         }
 
+        /// <summary>
+        /// Returns a List of neighbouring positions, that fall within the bounds.
+        /// </summary>
+        /// <param name="theMinPos"></param>
+        /// <param name="theMaxPos"></param>
+        /// <returns></returns>
+        public List<Position> GetNeighbours(int theMinPos = int.MinValue, int theMaxPos = int.MaxValue)
+        {
+            List<Position> aList = new List<Position>(4);
+
+            var my = this.Clone().MoveUp();
+            var px = this.Clone().MoveRight();
+            var py = this.Clone().MoveDown();
+            var mx = this.Clone().MoveLeft();
+
+            if (my.InBounds(theMinPos, theMaxPos)) aList.Add(my);
+            if (px.InBounds(theMinPos, theMaxPos)) aList.Add(px);
+            if (py.InBounds(theMinPos, theMaxPos)) aList.Add(py);
+            if (mx.InBounds(theMinPos, theMaxPos)) aList.Add(mx);
+
+            return aList;
+        }
+
+        /// <summary>
+        /// Returns true if the Position is within the bounds
+        /// The Lower bound is inclusive
+        /// The upper bound is exclusive
+        /// </summary>
+        /// <param name="theMinValue"></param>
+        /// <param name="theMaxValue"></param>
+        /// <returns></returns>
+        public bool InBounds(int theMinValue = 0, int theMaxValue = 10)
+        {
+            return X >= theMinValue && X < theMaxValue && Y >= theMinValue && Y < theMaxValue;
+        }
+
         public int GetCellIndex()
         {
             return Y * GameManagerService.GRID_SIZE + X;
@@ -99,9 +136,28 @@ namespace Battleship_v2.Utility
             Y = theCellIndex / GameManagerService.GRID_SIZE;
         }
 
-        public void MoveRight() => X++;
-        public void MoveLeft() => X--;
-        public void MoveDown() => Y++;
-        public void MoveUp() => Y--;
+        public Position MoveRight()
+        {
+            X++;
+            return this;
+        }
+
+        public Position MoveLeft()
+        {
+            X--;
+            return this;
+        }
+
+        public Position MoveDown()
+        {
+            Y++;
+            return this;
+        }
+
+        public Position MoveUp()
+        {
+            Y--;
+            return this;
+        }
     }
 }

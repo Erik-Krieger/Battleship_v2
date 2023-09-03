@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Battleship_v2.Utility;
 
@@ -16,6 +17,14 @@ namespace Battleship_v2.Ships
         Submarine = 3,
         Destroyer = 4,
         PatrolBoat = 5,
+    }
+
+    public enum HitType
+    {
+        None,
+        Hit,
+        Repeat,
+        Sunk,
     }
 
     public abstract class Ship
@@ -122,21 +131,17 @@ namespace Battleship_v2.Ships
         /// <param name="thePosition"></param>
         /// <param name="isPlacementOnly"></param>
         /// <returns></returns>
-        public bool IsHit( Position thePosition )
+        public HitType IsHit( Position thePosition )
         {
-            //m_Cells.ForEach(cell => { Debug.WriteLine(cell); });
-
+            // Iterate through all cells of the ship.
             foreach ( var aCell in m_Cells )
             {
-                Debug.WriteLine($"Positions {thePosition} - {aCell}");
                 // These matching means, that they share the same coordinates.
                 // We only want to mark is as a hit, if that cell hasn't been hit before.
                 if (thePosition == aCell )
                 {
-                    Debug.WriteLine("Matching");
-                    //Debug.WriteLine("Cells colliding");
-                    // Skip Iteration, if the cell was already hit.
-                    if (aCell.WasHit) continue;
+                    // Return HitType.Repeat, if the cell has been hit before.
+                    if (aCell.WasHit) return HitType.Repeat;
 
                     // Mark both cells as hit.
                     // aCell -> for counting unique hits on the ship
@@ -144,11 +149,11 @@ namespace Battleship_v2.Ships
                     // thePosition -> for the tracking of the Enemy AI
                     thePosition.WasHit = true;
 
-                    return true;
+                    return HitType.Hit;
                 }
             }
 
-            return false;
+            return HitType.None;
         }
 
         /// <summary>

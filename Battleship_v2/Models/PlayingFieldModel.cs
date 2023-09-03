@@ -82,6 +82,14 @@ namespace Battleship_v2.Models
         }
 
         /// <summary>
+        /// This just calls the AcceptChanges Method on the DataTable.
+        /// </summary>
+        public void AcceptChanges()
+        {
+            ViewModel.Grid.AcceptChanges();
+        }
+
+        /// <summary>
         /// Sets the specified cell on the grid to the specified value
         /// </summary>
         /// <param name="theXPos"></param>
@@ -173,6 +181,28 @@ namespace Battleship_v2.Models
             {
                 WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameOverViewModel(GameManagerService.Instance.YourTurn);
             }
+        }
+
+        /// <summary>
+        /// This is called, when a cell in the enemy grid is clicked.
+        /// It takes an Integer as the first argument and an object as the second.
+        /// These values are 1 based indeces.
+        /// Meaning, they should be in the range from [1-10]
+        /// </summary>
+        /// <param name="theColumnIndex">An integer representing the column index</param>
+        /// <param name="theRowIndex">An object, that is actually a string, that stores the row index</param>
+        public void GridCellClicked(int theColumnIndex, object theRowIndex)
+        {
+            if (!GameManagerService.Instance.YourTurn) return;
+
+            if (!int.TryParse(theRowIndex as string, out int aRowIndex))
+            {
+                return;
+            }
+
+            Debug.WriteLine($"Clicked at: {theColumnIndex}/{theRowIndex}");
+
+            GameManagerService.Instance.ProcessShot(theColumnIndex - 1, aRowIndex - 1);
         }
     }
 }
