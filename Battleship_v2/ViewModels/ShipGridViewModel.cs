@@ -37,10 +37,10 @@ namespace Battleship_v2.ViewModels
 
         public List<Ship> Ships { get; set; }
 
-        public ShipGridViewModel(PlayerType theOwner)
+        public ShipGridViewModel(PlayerType theOwner, List<ushort> theShipList)
         {
             Owner = theOwner;
-            Model = new ShipGridModel(this, theOwner == PlayerType.You);
+            Model = new ShipGridModel(this, theOwner == PlayerType.You, theShipList);
             if (theOwner == PlayerType.You)
             {
                 //Model.DrawAllShips();

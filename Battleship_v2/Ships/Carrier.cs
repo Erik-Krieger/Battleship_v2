@@ -11,6 +11,9 @@ namespace Battleship_v2.Ships
         const char LETTER = 'c';
         const int LENGTH = 5;
 
-        public Carrier() : base(LETTER, LENGTH) { }
+        public Carrier() : base(LETTER, LENGTH)
+        {
+            m_Type = ShipType.Carrier;
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace Battleship_v2.Networking
                             aDecodedByteArray[i] = (byte)(aByteArray[anOffset + (int)i] ^ aBitmaskArray[i % 4]);
 
                         // Converting the Bytes to a String
-                        aMessage = Encoding.UTF8.GetString(aDecodedByteArray);
+                        aMessage = DecodeString(aDecodedByteArray);
                         // Adding the Message to the message Queue.
                         addMessageToQueue(aMessage);
                     }
@@ -155,7 +155,7 @@ namespace Battleship_v2.Networking
                 "Upgrade: websocket\r\n" +
                 "Sec-WebSocket-Accept: " + aSecureWebSocketKeyHashAsBase64 + "\r\n\r\n");
 
-            m_Stream.Write(aResponse, 0, aResponse.Length);
+            m_TcpClient.GetStream().Write(aResponse, 0, aResponse.Length);
 
             // Notify the UI, that a client has connected.
             notifyClientConnected();
@@ -168,7 +168,7 @@ namespace Battleship_v2.Networking
                 return;
             }
 
-            byte[] aByteArray = Encoding.UTF8.GetBytes(theMessage);
+            byte[] aByteArray = EncodeString(theMessage);
 
             byte[] aHeader;
             if (aByteArray.Length < 126)

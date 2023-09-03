@@ -35,15 +35,27 @@ namespace Battleship_v2.ViewModels
             // Invert aTurn, because we need to send the opposite value of what we're storing to the client.
             aTurn = aTurn == PlayerType.You ? PlayerType.Enemy : PlayerType.You;
 
+            // Generate two ship lists.
+            var yourShips = GameManagerService.Instance.GenerateShipList();
+            var enemyShips = GameManagerService.Instance.GenerateShipList();
+
+            // Convert the Ship Lists into a String representations.
+            var yssr = NetworkService.ConvertShipListToStringRep(yourShips);
+            var essr = NetworkService.ConvertShipListToStringRep(enemyShips);
+
             // Send the start-game message to the connected client and include an integer indicating, who makes the fist turn.
-            NetworkService.Instance.NetworkPeer.SendMessage($"start-game,{(int)aTurn}");
+            NetworkService.Instance.NetworkPeer.SendMessage($"start-game,{(int)aTurn},{yssr},{essr}");
 
             // We have to enable the event, in case our opponent makes the first turn, to activate the event listener.
             // If this is not done Network messages will just be ignored.
             ((EnemyPerson)GameManagerService.Instance.Opponent).EventEnabled = !GameManagerService.Instance.YourTurn;
 
+            // Convert back the String Representation
+            var yus = NetworkService.ConvertStringRepToUshortList(yssr);
+            var eus = NetworkService.ConvertStringRepToUshortList(essr);
+
             // Change the current View to the main game view.
-            WindowManagerService.ChangeView(new GameViewModel());
+            WindowManagerService.ChangeView(new GameViewModel(yus, eus));
         }
     }
 }

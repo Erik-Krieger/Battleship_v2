@@ -11,6 +11,9 @@ namespace Battleship_v2.Ships
         const char LETTER = 'p';
         const int LENGTH = 2;
 
-        public PatrolBoat() : base(LETTER, LENGTH) { }
+        public PatrolBoat() : base(LETTER, LENGTH)
+        {
+            m_Type = ShipType.PatrolBoat;
+        }
     }
 }

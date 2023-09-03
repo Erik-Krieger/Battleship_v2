@@ -1,9 +1,12 @@
 ﻿using Battleship_v2.Networking;
+using Battleship_v2.Ships;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace Battleship_v2.Services
 {
@@ -97,6 +100,42 @@ namespace Battleship_v2.Services
 
             // Shutdown the Network Thread.
             NetworkPeer.Stop();
+        }
+
+        public static string ConvertShipListToStringRep(List<Ship> theShipList)
+        {
+            string aStringRep = string.Empty;
+
+            foreach (Ship aShip in theShipList)
+            {
+                aStringRep += NetworkPeer.ConvertUshortToStringRep(aShip.ToBitField());
+            }
+
+            return aStringRep;
+        }
+
+        public static List<ushort> ConvertStringRepToUshortList(string theStringRep)
+        {
+            if (string.IsNullOrEmpty(theStringRep))
+            {
+                throw new ArgumentNullException(nameof(theStringRep));
+            }
+
+            if (theStringRep.Length % 2 != 0)
+            {
+                throw new ArgumentException("The String Rep has to be divisivble by two.");
+            }
+
+            List<ushort> aList = new List<ushort>(theStringRep.Length / 2);
+
+            for (int anIdx = 0; anIdx < theStringRep.Length; anIdx += 2)
+            {
+                string aStringRep = theStringRep.Substring(anIdx, 2);
+                ushort aBitField = NetworkPeer.ConvertStringRepToUshort(aStringRep);
+                aList.Add(aBitField);
+            }
+
+            return aList;
         }
     }
 }

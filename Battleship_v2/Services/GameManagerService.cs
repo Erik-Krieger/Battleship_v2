@@ -3,7 +3,9 @@ using Battleship_v2.Models;
 using Battleship_v2.Ships;
 using Battleship_v2.Utility;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace Battleship_v2.Services
 {
@@ -18,6 +20,11 @@ namespace Battleship_v2.Services
 
     public class GameManagerService : PropertyChangeHandler
     {
+        /// <summary>
+        /// A seed for the random generator, that is by default set to the current UTC time in ms.
+        /// </summary>
+        private static int m_RandomSeed = 17;//DateTime.UtcNow.Millisecond;
+
         /// <summary>
         /// An instance of a randomizer shared across the whole class.
         /// </summary>
@@ -300,7 +307,111 @@ namespace Battleship_v2.Services
             // This will process the shot, and encapsulates most of the game logic.
             processShot(theNextMove, OwnGrid);
             // For good measure.
-            Debug.WriteLine($"Made my move: {theNextMove}");
+            //Debug.WriteLine($"Made my move: {theNextMove}");
+        }
+
+        /// <summary>
+        /// Generates a List of all the ships of this grid and places them.
+        /// </summary>
+        /// <returns></returns>
+        public List<Ship> GenerateShipList(List<ushort> theShipList = null)
+        {
+            // Create a list of all the ships, that will be on this grid.
+            var aList = new List<Ship>()
+            {
+                new Carrier(),
+                new Battleship(),
+                new Battleship(),
+                new Submarine(),
+                new Submarine(),
+                new Destroyer(),
+                new Destroyer(),
+                new PatrolBoat(),
+                new PatrolBoat(),
+                new PatrolBoat()
+            };
+
+            // Check if there was a list of ships passed in.
+            // This is the case, when we're connected to a multiplayer game as the client.
+            if (!(theShipList is null) && theShipList.Count == aList.Count)
+            {
+                // Iterate through the ships and set their values from the bitFields.
+                for (int anIdx = 0; anIdx < aList.Count; anIdx++)
+                {
+                    Debug.WriteLine($"{anIdx + 1}: {theShipList[anIdx]}");
+                    aList[anIdx].FromBitField(theShipList[anIdx]);
+                }
+
+                return aList;
+            }
+
+            // This will do an in place modification of the positions.
+            placeShipsRandomly(aList);
+
+            //int index = 0;
+            foreach (var a in aList)
+            {
+                ushort bitField = a.ToBitField();
+                //Debug.WriteLine($"{++index}: {bitField}");
+            }
+
+            return aList;
+        }
+
+        /// <summary>
+        /// This will generate a random position for all ships, which does not collide with any other ship.
+        /// The input list will be modified.
+        /// </summary>
+        /// <param name="theShipList"></param>
+        private void placeShipsRandomly(List<Ship> theShipList)
+        {
+            Random aRng = new Random(m_RandomSeed++);
+            Position aPos = new Position();
+
+            // Iterate through all Ships in the List to place them.
+            foreach (Ship aShip in theShipList)
+            {
+                // Repeat the Placement until a position is found, where the ship does not collide with any other ship.
+                do
+                {
+                    // Generate a random direction in which to place the ship.
+                    Orientation aDir = aRng.Next() % 2 == 0 ? Orientation.Horizontal : Orientation.Vertical;
+                    // Generate a random value for the reversed state.
+                    bool isReversed = (aRng.Next() % 2 == 0);
+
+                    // Generate a random position, that is within the play area.
+                    // 10 - aShip.Length + 1, because the upper bound is exclusive and a ship with a length of two cells.
+                    // Should at most be placed on X-Postion 8 due to the location of a ship being it's top left corner.
+                    aPos.X = aRng.Next(10 - aShip.Length + 1);
+                    aPos.Y = aRng.Next(10);
+
+                    // Swap the two Position values, if the ship aligned vertically.
+                    if (aDir == Orientation.Vertical) aPos.Swap();
+
+                    aShip.SetShipValues(aPos, aDir, isReversed);
+                }
+                while (isColliding(aShip, theShipList));
+            }
+        }
+
+        /// <summary>
+        /// Checks whether or not the ship is colliding with any other ship.
+        /// </summary>
+        /// <param name="theShip"></param>
+        /// <param name="theShipList"></param>
+        /// <returns></returns>
+        private bool isColliding(Ship theShip, List<Ship> theShipList)
+        {
+            foreach (Ship aShip in theShipList)
+            {
+                // Skip the iteration, when comparing against itself.
+                if (aShip == theShip) break;
+
+                // Check if the two ships share any position.
+                if (aShip.IntersectsWith(theShip)) return true;
+            }
+
+            return false;
         }
     }
 }

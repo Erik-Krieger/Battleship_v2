@@ -2,6 +2,8 @@
 using Battleship_v2.Services;
 using Battleship_v2.Utility;
 using System;
+using System.Collections.Generic;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Battleship_v2.ViewModels
@@ -24,14 +26,14 @@ namespace Battleship_v2.ViewModels
             GameManagerService.Instance.SelectDifficulty(Difficulty.Person);
         }
 
-        public void BeginGame()
+        public void BeginGame(List<ushort> theListOfYourShips, List<ushort> theListOfEnemyShips)
         {
             //
             ((EnemyPerson)GameManagerService.Instance.Opponent).InjectNetworkPeer(NetworkService.Instance.NetworkPeer);
             //
             ((EnemyPerson)GameManagerService.Instance.Opponent).EventEnabled = !GameManagerService.Instance.YourTurn;
             // Change the View to display the main Game Screen.
-            WindowManagerService.ChangeView(new GameViewModel());
+            WindowManagerService.ChangeView(new GameViewModel(theListOfYourShips, theListOfEnemyShips));
         }
     }
 }

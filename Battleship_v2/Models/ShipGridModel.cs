@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Battleship_v2.Models
@@ -23,10 +24,9 @@ namespace Battleship_v2.Models
         public ShipGridViewModel ViewModel { get; private set; }
 
         // This keeps track, if the Grid is owned by the player or the opponent.
-        public ShipGridModel(ShipGridViewModel theViewModel, bool isOwn)
+        public ShipGridModel(ShipGridViewModel theViewModel, bool isOwn, List<ushort> theShipList)
         {
             ViewModel = theViewModel;
-            //GameManagerService.Instance.InjectShipGridModel( this );
 
             // Set the random seed based on grid owner, to avoid both sides having an identical grid.
             m_RandomSeed = isOwn ? m_RandomSeed : m_RandomSeed << 1;
@@ -62,36 +62,16 @@ namespace Battleship_v2.Models
                 ViewModel.Grid.Rows.Add(aRow);
             }
 
-            ViewModel.Ships = generateShipList();
+            ViewModel.Ships = GameManagerService.Instance.GenerateShipList(theShipList);
             //DrawAllShips();
         }
 
         /// <summary>
-        /// 
+        /// Checks if any given position is inside the playing area.
         /// </summary>
+        /// <param name="theXPos"></param>
+        /// <param name="theYPos"></param>
         /// <returns></returns>
-        private List<Ship> generateShipList()
-        {
-            var aList = new List<Ship>()
-            {
-                new Carrier(),
-                new Battleship(),
-                new Battleship(),
-                new Submarine(),
-                new Submarine(),
-                new Destroyer(),
-                new Destroyer(),
-                new PatrolBoat(),
-                new PatrolBoat(),
-                new PatrolBoat()
-            };
-
-            // This will do an in place modification of the positions.
-            placeShipsRandomly(aList);
-
-            return aList;
-        }
-
         private bool isInBounds(int theXPos, int theYPos)
         {
             // In case a change breaks hitting any shot in the last column, it's probably due this line.
@@ -102,7 +82,7 @@ namespace Battleship_v2.Models
         }
 
         /// <summary>
-        /// 
+        /// Sets the specified cell on the grid to the specified value
         /// </summary>
         /// <param name="theXPos"></param>
         /// <param name="theYPos"></param>
@@ -163,12 +143,12 @@ namespace Battleship_v2.Models
         /// <summary>
         /// Draws all Ships onto the Grip.
         /// </summary>
-        public void DrawAllShips()
+        public void DrawAllShips(bool allSunk = false)
         {
             foreach (var aShip in ViewModel.Ships)
             {
-                DrawShip(aShip);
-                aShip.Cells.ForEach(cell => Debug.WriteLine(cell));
+                DrawShip(aShip, allSunk);
+                Debug.WriteLine(aShip);
                 Debug.WriteLine("");
             }
         }
@@ -192,62 +172,6 @@ namespace Battleship_v2.Models
             if (ViewModel.Ships.Count == 0)
             {
                 WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameOverViewModel(GameManagerService.Instance.YourTurn);
-            }
-        }
-
-        /// <summary>
-        /// Checks whether or not the ship is colliding with any other ship.
-        /// </summary>
-        /// <param name="theShip"></param>
-        /// <param name="theShipList"></param>
-        /// <returns></returns>
-        private bool isColliding(Ship theShip, List<Ship> theShipList)
-        {
-            foreach (Ship aShip in theShipList)
-            {
-                // Skip the iteration, when comparing against itself.
-                if (aShip == theShip) break;
-
-                // Check if the two ships share any position.
-                if (aShip.IntersectsWith(theShip)) return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// This will generate a random position for all ships, which does not collide with any other ship.
-        /// The input list will be modified.
-        /// </summary>
-        /// <param name="theShipList"></param>
-        private void placeShipsRandomly(List<Ship> theShipList)
-        {
-            Random aRng = new Random(m_RandomSeed);
-            Position aPos = new Position();
-
-            // Iterate through all Ships in the List to place them.
-            foreach (Ship aShip in theShipList)
-            {
-                // Repeat the Placement until a position is found, where the ship does not collide with any other ship.
-                do
-                {
-                    // Generate a random direction in which to place the ship.
-                    Orientation aDir = aRng.Next() % 2 == 0 ? Orientation.Horizontal : Orientation.Vertical;
-                    // Generate a random value for the reversed state.
-                    bool isReversed = (aRng.Next() % 2 == 0);
-
-                    // Generate a random position, that is within the play area.
-                    // 10 - aShip.Length + 1, because the upper bound is exclusive and a ship with a length of two cells.
-                    // Should at most be placed on X-Postion 8 due to the location of a ship being it's top left corner.
-                    aPos.X = aRng.Next(10 - aShip.Length + 1);
-                    aPos.Y = aRng.Next(10);
-
-                    // Swap the two Position values, if the ship aligned vertically.
-                    if (aDir == Orientation.Vertical) aPos.Swap();
-
-                    aShip.SetShipValues(aPos, aDir, isReversed);
-                }
-                while (isColliding(aShip, theShipList));
             }
         }
     }

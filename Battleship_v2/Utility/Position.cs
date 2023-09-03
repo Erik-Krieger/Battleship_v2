@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Battleship_v2.Models;
+using Battleship_v2.Services;
 
 namespace Battleship_v2.Utility
 {
@@ -79,6 +80,23 @@ namespace Battleship_v2.Utility
         public Position GetNeighbour( Orientation theOrientation = Orientation.Horizontal, int theDirection = 1 )
         {
             return theOrientation == Orientation.Horizontal ? new Position( X + theDirection, Y ) : new Position( X, Y + theDirection );
+        }
+
+        public int GetCellIndex()
+        {
+            return Y * GameManagerService.GRID_SIZE + X;
+        }
+
+        public void FromCellIndex( int theCellIndex )
+        {
+            // Terminate here, if the cell index is out of bounds of the grid.
+            if (theCellIndex < 0 || theCellIndex > (GameManagerService.GRID_SIZE * GameManagerService.GRID_SIZE) - 1)
+            {
+                return;
+            }
+
+            X = theCellIndex % GameManagerService.GRID_SIZE;
+            Y = theCellIndex / GameManagerService.GRID_SIZE;
         }
 
         public void MoveRight() => X++;

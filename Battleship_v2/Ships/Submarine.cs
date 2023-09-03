@@ -11,6 +11,9 @@ namespace Battleship_v2.Ships
         const char LETTER = 's';
         const int LENGTH = 3;
 
-        public Submarine() : base(LETTER, LENGTH) { }
+        public Submarine() : base(LETTER, LENGTH)
+        {
+            m_Type = ShipType.Submarine;
+        }
     }
 }

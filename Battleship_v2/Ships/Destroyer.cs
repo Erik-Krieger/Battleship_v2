@@ -11,6 +11,9 @@ namespace Battleship_v2.Ships
         const char LETTER = 'd';
         const int LENGTH = 3;
 
-        public Destroyer() : base(LETTER, LENGTH) { }
+        public Destroyer() : base(LETTER, LENGTH)
+        {
+            m_Type = ShipType.Destroyer;
+        }
     }
 }

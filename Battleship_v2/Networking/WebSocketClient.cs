@@ -27,20 +27,27 @@ namespace Battleship_v2.Networking
         private async void receiveMessage()
         {
             // Create a read buffer with a size of 4kb.
-            byte[] aByteArray = new byte[256];
+            byte[] aByteArray = new byte[1024];
             ArraySegment<byte> aBuffer = new ArraySegment<byte>(aByteArray);
 
             // Run the loop forever.
             while (true)
             {
                 // Wait for message to be received.
+                /*try
+                {*/
                 var aResponse = await webSocket.ReceiveAsync(aBuffer, m_CancelToken.Token);
+                /*}
+                catch ()
+                {
+
+                }*/
                 
                 // Check if the Message is not null
                 if (!(aResponse is null))
                 {
                     // Convert the Message to a String.
-                    string aMessage = Encoding.UTF8.GetString(aByteArray);
+                    string aMessage = DecodeString(aByteArray);
                     // Add the String to the Message Queue.
                     addMessageToQueue(aMessage);
                 }
@@ -55,7 +62,7 @@ namespace Battleship_v2.Networking
         /// <param name="theMessage">The message to send</param>
         private async void sendMessageAsync(string theMessage)
         {
-            var aByteArray = Encoding.UTF8.GetBytes(theMessage);
+            var aByteArray = EncodeString(theMessage);
             await webSocket.SendAsync(new System.ArraySegment<byte>(aByteArray), WebSocketMessageType.Text, false, default);
         }
 
