@@ -104,7 +104,7 @@ namespace Battleship_v2.Models
 
             // We need to increment here, since Column zero contains the row number
             // and when we say theXPos = 0, we refer to the first column of the playing field.
-            theXPos++;
+            //theXPos++;
 
             ViewModel.Grid.Rows[theYPos][theXPos] = $"{theValue}";
             ViewModel.Grid.AcceptChanges();
@@ -191,18 +191,18 @@ namespace Battleship_v2.Models
         /// </summary>
         /// <param name="theColumnIndex">An integer representing the column index</param>
         /// <param name="theRowIndex">An object, that is actually a string, that stores the row index</param>
-        public void GridCellClicked(int theColumnIndex, object theRowIndex)
+        public void GridCellClicked(int theColumnIndex, int theRowIndex)
         {
             if (!GameManagerService.Instance.YourTurn) return;
 
-            if (!int.TryParse(theRowIndex as string, out int aRowIndex))
+            /*if (!int.TryParse(theRowIndex as string, out int aRowIndex))
             {
                 return;
-            }
+            }*/
 
             Debug.WriteLine($"Clicked at: {theColumnIndex}/{theRowIndex}");
 
-            GameManagerService.Instance.ProcessShot(theColumnIndex - 1, aRowIndex - 1);
+            GameManagerService.Instance.ProcessShot(theColumnIndex - 1, theRowIndex - 1);
         }
     }
 }

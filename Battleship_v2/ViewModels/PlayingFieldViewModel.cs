@@ -1,6 +1,7 @@
 ﻿using Battleship_v2.Models;
 using Battleship_v2.Services;
 using Battleship_v2.Ships;
+using Battleship_v2.Utility;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows;
@@ -29,7 +30,11 @@ namespace Battleship_v2.ViewModels
         public DataTable Grid
         {
             get => m_Grid;
-            set => SetProperty(ref m_Grid, value);
+            set
+            {
+                m_Grid = value;
+                NotifyPropertyChanged(nameof(Grid));
+            }
         }
         private DataTable m_Grid;
 
@@ -84,7 +89,15 @@ namespace Battleship_v2.ViewModels
             aDataGrid.AutoGenerateColumns = false;
             aDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
             aDataGrid.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-            aDataGrid.
+            aDataGrid.SelectionMode = DataGridSelectionMode.Single;
+            aDataGrid.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            // Binding for the currently selected cell.
+            Binding aBinding = new Binding(nameof(CurrentCell));
+            aBinding.Source = this;
+            aBinding.Mode = BindingMode.OneWayToSource;
+            aBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            BindingOperations.SetBinding(aDataGrid, DataGrid.CurrentCellProperty, aBinding);
 
             // Header config
             aDataGrid.HeadersVisibility = DataGridHeadersVisibility.All;
@@ -126,7 +139,7 @@ namespace Battleship_v2.ViewModels
             return aDataGrid;
         }
 
-        private static DataTable createDataTable(string theDefaultValue = "../../Resources/dev_art/blue.png")
+        private static DataTable createDataTable(string theDefaultValue = Tiles.Water)
         {
             var aTable = new DataTable();
 

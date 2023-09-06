@@ -280,7 +280,7 @@ namespace Battleship_v2.Services
             }
 
             // this is the base case, if there was no hit on the cell, we mark it as a miss.
-            theGrid.SetCell(theMove.X, theMove.Y, 'm');
+            theGrid.SetCell(theMove.X, theMove.Y, "../../Resources/dev_art/light_gray.png");
 
             // When you made your move change the turn to your opponent.
             changeTurns();
