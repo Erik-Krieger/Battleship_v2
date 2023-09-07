@@ -108,6 +108,8 @@ namespace Battleship_v2.Models
 
             ViewModel.Grid.Rows[theYPos][theXPos] = $"{theValue}";
             ViewModel.Grid.AcceptChanges();
+
+            Debug.WriteLine(ViewModel.Grid);
         }
 
         /// <summary>
