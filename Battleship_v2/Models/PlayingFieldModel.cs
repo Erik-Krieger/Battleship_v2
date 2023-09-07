@@ -31,37 +31,6 @@ namespace Battleship_v2.Models
             // Set the random seed based on grid owner, to avoid both sides having an identical grid.
             m_RandomSeed = isOwn ? m_RandomSeed : m_RandomSeed << 1;
 
-            ViewModel.Grid = new DataTable();
-
-            char theColumnLetter = 'A';
-
-            // Generate Columns
-            for (int anIdx = 0; anIdx < 11; anIdx++)
-            {
-                var aCol = new DataColumn();
-
-                if (anIdx == 0)
-                {
-                    aCol.ColumnName = "#";
-                    /*aCol.AutoIncrement = true;
-                    aCol.AutoIncrementSeed = 1;*/
-                }
-                else
-                {
-                    aCol.ColumnName = $"{theColumnLetter++}";
-                    aCol.DefaultValue = "w";
-                }
-                ViewModel.Grid.Columns.Add(aCol);
-            }
-
-            // Generate Rows
-            for (int anIdx = 0; anIdx < 10; anIdx++)
-            {
-                DataRow aRow = ViewModel.Grid.NewRow();
-                aRow[0] = anIdx + 1;
-                ViewModel.Grid.Rows.Add(aRow);
-            }
-
             ViewModel.Ships = GameManagerService.Instance.GenerateShipList(theShipList);
             //DrawAllShips();
         }
@@ -171,12 +140,15 @@ namespace Battleship_v2.Models
         {
             foreach (var aCell in theShip.Cells)
             {
-                SetCell(aCell, theShip.Letter);
+                SetCell(aCell, theShip.Tile);
             }
 
             if (!isSunk) return;
 
-            ViewModel.Ships.Remove(theShip);
+            var aTempList = ViewModel.Ships;
+            aTempList.Remove(theShip);
+            ViewModel.Ships = null;
+            ViewModel.Ships = aTempList;
 
             // This is just here to prove a point.
             if (ViewModel.Ships.Count == 0)

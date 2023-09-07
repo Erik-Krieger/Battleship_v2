@@ -44,8 +44,28 @@
     </UserControl.Resources>
 
     <Grid>
-        <DockPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0">
             <ContentControl Content="{Binding DataGrid}" DockPanel.Dock="Right" />
         </DockPanel>
+
+        <Grid Grid.Column="1" Margin="5 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="Ships" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Ships}" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ship Type" Binding="{Binding}" Width="*"/>
+                    <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>

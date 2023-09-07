@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleship_v2.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,9 @@ namespace Battleship_v2.Ships
 {
     sealed public class PatrolBoat : Ship
     {
-        const char LETTER = 'p';
         const int LENGTH = 2;
 
-        public PatrolBoat() : base(LETTER, LENGTH)
+        public PatrolBoat() : base(Tiles.PatrolBoat, LENGTH)
         {
             m_Type = ShipType.PatrolBoat;
         }

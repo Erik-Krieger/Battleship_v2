@@ -10,7 +10,7 @@ namespace Battleship_v2.Utility
         // boiler-plate
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged( string thePropertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( thePropertyName ) );
+        public void NotifyPropertyChanged( string thePropertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( thePropertyName ) );
 
         protected bool SetProperty<T>( ref T theField, T theValue, [CallerMemberName] string thePropertyName = null )
         {

@@ -53,12 +53,21 @@ namespace Battleship_v2.ViewModels
                 if (m_CurrentCell.Column is null || m_CurrentCell.Item is null) return;
 
                 // Call the processing Method in the Model.
-                Model.GridCellClicked(m_CurrentCell.Column.DisplayIndex, DataGrid.Items.IndexOf(((DataRowView)m_CurrentCell.Item)));
+                Model.GridCellClicked(m_CurrentCell.Column.DisplayIndex + 1, DataGrid.Items.IndexOf(((DataRowView)m_CurrentCell.Item)) + 1);
             }
         }
         private DataGridCellInfo m_CurrentCell;
 
-        public List<Ship> Ships { get; set; }
+        public List<Ship> Ships
+        {
+            get => m_Ships;
+            set
+            {
+                m_Ships = value;
+                NotifyPropertyChanged(nameof(Ships));
+            }
+        }
+        private List<Ship> m_Ships;
 
         public PlayingFieldViewModel(PlayerType theOwner, List<ushort> theShipList)
         {

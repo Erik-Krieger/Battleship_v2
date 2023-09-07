@@ -43,8 +43,8 @@ namespace Battleship_v2.Ships
         public int XPos { get => m_Position.X; }
         public int YPos { get => m_Position.Y; }
 
-        public char Letter { get => m_Letter; }
-        private char m_Letter;
+        public string Tile { get => m_Tile; }
+        private string m_Tile;
 
         public int HitCount { get => m_HitCount ; private set => m_HitCount = value; }
         private int m_HitCount = 0;
@@ -57,9 +57,9 @@ namespace Battleship_v2.Ships
         /// </summary>
         /// <param name="theLetterRepresenation"></param>
         /// <param name="theLength"></param>
-        public Ship( char theLetterRepresenation, int theLength )
+        public Ship( string theTile, int theLength )
         {
-            m_Letter = theLetterRepresenation;
+            m_Tile = theTile;
             m_Length = theLength;
             Cells = new List<Position>(m_Length);
 
@@ -277,12 +277,28 @@ namespace Battleship_v2.Ships
 
         public override string ToString()
         {
-            string o = m_Orientation == Orientation.Horizontal ? "H" : "V";
-            string s = $"{Letter}-({Location.ToString()})-{o}-{m_Reversed.ToString()}";
+            /*string o = m_Orientation == Orientation.Horizontal ? "H" : "V";
+            string s = $"{Tile}-({Location.ToString()})-{o}-{m_Reversed.ToString()}";
 
             m_Cells.ForEach((c) => { s += '-' + c.ToString(); });
 
-            return s;
+            return s;*/
+
+            switch (m_Type)
+            {
+                case ShipType.Carrier:
+                    return "Carrier";
+                case ShipType.Battleship:
+                    return "Battleship";
+                case ShipType.Submarine:
+                    return "Submarine";
+                case ShipType.Destroyer:
+                    return "Destroyer";
+                case ShipType.PatrolBoat:
+                    return "PatrolBoat";
+                default:
+                    return "No type specified.";
+            }
         }
     }
 }
