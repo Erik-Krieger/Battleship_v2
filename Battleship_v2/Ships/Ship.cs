@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Battleship_v2.Utility;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using Battleship_v2.Utility;
 
 namespace Battleship_v2.Ships
 {
@@ -43,10 +40,10 @@ namespace Battleship_v2.Ships
         public int XPos { get => m_Position.X; }
         public int YPos { get => m_Position.Y; }
 
-        public string Tile { get => m_Tile; }
-        private string m_Tile;
+        public string TileSprite { get => m_TileSprite; }
+        private string m_TileSprite;
 
-        public int HitCount { get => m_HitCount ; private set => m_HitCount = value; }
+        public int HitCount { get => m_HitCount; private set => m_HitCount = value; }
         private int m_HitCount = 0;
 
         public Position Location { get => m_Position; set => m_Position = value; }
@@ -57,9 +54,9 @@ namespace Battleship_v2.Ships
         /// </summary>
         /// <param name="theLetterRepresenation"></param>
         /// <param name="theLength"></param>
-        public Ship( string theTile, int theLength )
+        public Ship(string theTile, int theLength)
         {
-            m_Tile = theTile;
+            m_TileSprite = theTile;
             m_Length = theLength;
             Cells = new List<Position>(m_Length);
 
@@ -113,15 +110,15 @@ namespace Battleship_v2.Ships
         /// <param name="theLength"></param>
         /// <param name="theOrientation"></param>
         /// <returns></returns>
-        private static bool isLegalPosition( int theXPos, int theYPos, int theLength, Orientation theOrientation )
+        private static bool isLegalPosition(int theXPos, int theYPos, int theLength, Orientation theOrientation)
         {
-            if ( theOrientation == Orientation.Horizontal )
+            if (theOrientation == Orientation.Horizontal)
             {
-                return ( theXPos >= 0 && theYPos + theLength <= 10 && theYPos >= 0 && theYPos < 10 );
+                return (theXPos >= 0 && theYPos + theLength <= 10 && theYPos >= 0 && theYPos < 10);
             }
             else
             {
-                return ( theXPos >= 0 && theXPos < 10 && theYPos >= 0 && theYPos + theLength <= 10 );
+                return (theXPos >= 0 && theXPos < 10 && theYPos >= 0 && theYPos + theLength <= 10);
             }
         }
 
@@ -131,14 +128,14 @@ namespace Battleship_v2.Ships
         /// <param name="thePosition"></param>
         /// <param name="isPlacementOnly"></param>
         /// <returns></returns>
-        public HitType IsHit( Position thePosition )
+        public HitType IsHit(Position thePosition)
         {
             // Iterate through all cells of the ship.
-            foreach ( var aCell in m_Cells )
+            foreach (var aCell in m_Cells)
             {
                 // These matching means, that they share the same coordinates.
                 // We only want to mark is as a hit, if that cell hasn't been hit before.
-                if (thePosition == aCell )
+                if (thePosition == aCell)
                 {
                     // Return HitType.Repeat, if the cell has been hit before.
                     if (aCell.WasHit) return HitType.Repeat;
@@ -172,7 +169,7 @@ namespace Battleship_v2.Ships
         /// <returns></returns>
         public bool IsSunk()
         {
-            return m_Cells.TrueForAll( (e) => e.WasHit );
+            return m_Cells.TrueForAll((e) => e.WasHit);
         }
 
         /// <summary>

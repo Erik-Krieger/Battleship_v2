@@ -148,7 +148,7 @@ namespace Battleship_v2.ViewModels
             return aDataGrid;
         }
 
-        private static DataTable createDataTable(string theDefaultValue = Tiles.Water)
+        private static DataTable createDataTable(string theDefaultValue = Tile.Water)
         {
             var aTable = new DataTable();
 

@@ -140,7 +140,7 @@ namespace Battleship_v2.Models
         {
             foreach (var aCell in theShip.Cells)
             {
-                SetCell(aCell, theShip.Tile);
+                SetCell(aCell, theShip.TileSprite);
             }
 
             if (!isSunk) return;

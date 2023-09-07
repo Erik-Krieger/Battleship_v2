@@ -11,7 +11,7 @@ namespace Battleship_v2.Ships
     {
         const int LENGTH = 3;
 
-        public Destroyer() : base(Tiles.Destroyer, LENGTH)
+        public Destroyer() : base(Tile.Destroyer, LENGTH)
         {
             m_Type = ShipType.Destroyer;
         }
