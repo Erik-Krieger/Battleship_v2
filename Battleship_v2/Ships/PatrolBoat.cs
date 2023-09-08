@@ -11,7 +11,7 @@ namespace Battleship_v2.Ships
     {
         const int LENGTH = 2;
 
-        public PatrolBoat() : base(Tile.PatrolBoat, LENGTH)
+        public PatrolBoat() : base(TileService.GetTile(TileType.PatrolBoat), LENGTH)
         {
             m_Type = ShipType.PatrolBoat;
         }

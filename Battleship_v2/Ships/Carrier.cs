@@ -11,7 +11,7 @@ namespace Battleship_v2.Ships
     {
         const int LENGTH = 5;
 
-        public Carrier() : base(Tile.Carrier, LENGTH)
+        public Carrier() : base(TileService.GetTile(TileType.Carrier), LENGTH)
         {
             m_Type = ShipType.Carrier;
         }

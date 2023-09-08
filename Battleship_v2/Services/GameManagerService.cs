@@ -256,7 +256,7 @@ namespace Battleship_v2.Services
                     else
                     {
                         // Mark the shot as a hit, in the case that the ship wasn't sunk
-                        theGrid.SetCell(theMove.X, theMove.Y, Tile.Hit);
+                        theGrid.SetCell(theMove.X, theMove.Y, TileService.GetTile(TileType.Hit));
                     }
 
                     // Change turns.
@@ -280,7 +280,7 @@ namespace Battleship_v2.Services
             }
 
             // this is the base case, if there was no hit on the cell, we mark it as a miss.
-            theGrid.SetCell(theMove.X, theMove.Y, Tile.Miss);
+            theGrid.SetCell(theMove.X, theMove.Y, TileService.GetTile(TileType.Miss));
 
             // When you made your move change the turn to your opponent.
             changeTurns();

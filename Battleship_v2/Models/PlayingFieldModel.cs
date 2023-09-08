@@ -75,7 +75,7 @@ namespace Battleship_v2.Models
             // and when we say theXPos = 0, we refer to the first column of the playing field.
             //theXPos++;
 
-            ViewModel.Grid.Rows[theYPos][theXPos] = $"{theValue}";
+            ViewModel.Grid.Rows[theYPos][theXPos] = theValue;
             ViewModel.Grid.AcceptChanges();
 
             Debug.WriteLine(ViewModel.Grid);

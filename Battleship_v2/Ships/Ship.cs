@@ -40,8 +40,8 @@ namespace Battleship_v2.Ships
         public int XPos { get => m_Position.X; }
         public int YPos { get => m_Position.Y; }
 
-        public string TileSprite { get => m_TileSprite; }
-        private string m_TileSprite;
+        public byte[] TileSprite { get => m_TileSprite; set => m_TileSprite = value; }
+        private byte[] m_TileSprite;
 
         public int HitCount { get => m_HitCount; private set => m_HitCount = value; }
         private int m_HitCount = 0;
@@ -54,7 +54,7 @@ namespace Battleship_v2.Ships
         /// </summary>
         /// <param name="theLetterRepresenation"></param>
         /// <param name="theLength"></param>
-        public Ship(string theTile, int theLength)
+        public Ship(byte[] theTile, int theLength)
         {
             m_TileSprite = theTile;
             m_Length = theLength;

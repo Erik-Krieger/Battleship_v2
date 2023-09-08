@@ -2,6 +2,7 @@
 using Battleship_v2.Services;
 using Battleship_v2.Ships;
 using Battleship_v2.Utility;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows;
@@ -148,14 +149,14 @@ namespace Battleship_v2.ViewModels
             return aDataGrid;
         }
 
-        private static DataTable createDataTable(string theDefaultValue = Tile.Water)
+        private static DataTable createDataTable()
         {
             var aTable = new DataTable();
 
             for (char aLetter = 'A'; aLetter <= 'J'; aLetter++)
             {
-                DataColumn col = new DataColumn($"{aLetter}");
-                col.DefaultValue = theDefaultValue;
+                DataColumn col = new DataColumn($"{aLetter}", typeof(byte[]));
+                col.DefaultValue = TileService.GetTile(TileType.Water);
                 aTable.Columns.Add(col);
             }
 
