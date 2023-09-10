@@ -19,7 +19,7 @@ namespace Battleship_v2.Models
         // This is here to avoid the problem of both players having the same ship layout,
         // since the default seed for the Random class is the time, which both instances of this class use.
         // therefore creating this race condition.
-        private int m_RandomSeed = (int)DateTime.UtcNow.Ticks;
+        //private int m_RandomSeed = (int)DateTime.UtcNow.Ticks;
 
         private bool[,] m_CellsHit = new bool[GRID_SIZE, GRID_SIZE];
 
@@ -31,7 +31,7 @@ namespace Battleship_v2.Models
             ViewModel = theViewModel;
 
             // Set the random seed based on grid owner, to avoid both sides having an identical grid.
-            m_RandomSeed = isOwn ? m_RandomSeed : m_RandomSeed << 1;
+            //m_RandomSeed = isOwn ? m_RandomSeed : m_RandomSeed << 1;
 
             ViewModel.Ships = GameManagerService.Instance.GenerateShipList(theShipList);
             //DrawAllShips();
@@ -68,16 +68,21 @@ namespace Battleship_v2.Models
         /// <param name="theValue"></param>
         public void SetCell(int theXPos, int theYPos, object theValue)
         {
+            // Check the bounds
             if (!isInBounds(theXPos, theYPos))
             {
                 return;
             }
 
+            // Checks if the cell has already been hit and if the Tile to be set is a Miss.
             if (m_CellsHit[theXPos, theYPos] == true && theValue == TileService.GetTile(TileType.Miss))
             {
+                // Call AcceptChanged on the DataTable.
+                AcceptChanges();
                 return;
             }
 
+            // Mark the cell as hit.
             m_CellsHit[theXPos, theYPos] = true;
 
             // We need to increment here, since Column zero contains the row number
@@ -86,8 +91,6 @@ namespace Battleship_v2.Models
 
             ViewModel.Grid.Rows[theYPos][theXPos] = theValue;
             ViewModel.Grid.AcceptChanges();
-
-            Debug.WriteLine(ViewModel.Grid);
         }
 
         /// <summary>

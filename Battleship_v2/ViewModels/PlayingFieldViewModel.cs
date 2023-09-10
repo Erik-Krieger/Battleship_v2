@@ -9,6 +9,7 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Battleship_v2.ViewModels
 {
@@ -71,6 +72,8 @@ namespace Battleship_v2.ViewModels
         }
         private ObservableCollection<Ship> m_Ships;
 
+        public Brush BackgroundColor { get; set; }
+
         public PlayingFieldViewModel(PlayerType theOwner, List<ushort> theShipList)
         {
             Owner = theOwner;
@@ -85,6 +88,8 @@ namespace Battleship_v2.ViewModels
             DataGrid.EndInit();
 
             Model = new PlayingFieldModel(this, theOwner == PlayerType.You, theShipList);
+
+            BackgroundColor = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         }
 
         private DataGrid createDataGrid()

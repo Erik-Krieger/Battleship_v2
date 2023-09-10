@@ -22,7 +22,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         
-        <TextBox Grid.Column="1" Grid.Row="1" Text="HostMenu" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="HostMenu" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
         <Button Grid.Column="1" Grid.Row="3" Margin="8" Content="Start" Command="{Binding CmdBegin}"/>
         <Button Grid.Column="1" Grid.Row="4" Margin="8" Content="Menu" Command="{Binding CmdOpenMultiplayerMenu}"/>
     </Grid>

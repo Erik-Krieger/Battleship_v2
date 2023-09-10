@@ -16,7 +16,7 @@ namespace Battleship_v2.Services
         /// <summary>
         /// 
         /// </summary>
-        public const int PORT = 1776;
+        public const int PORT = 80;
 
         /// <summary>
         /// 

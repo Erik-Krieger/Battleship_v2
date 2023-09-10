@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Battleship_v2.Networking
@@ -27,9 +28,10 @@ namespace Battleship_v2.Networking
 
         public async void Start()
         {
-            m_Listener = new TcpListener(IPAddress.Loopback, NetworkService.PORT);
+            m_Listener = new TcpListener(IPAddress.Any, NetworkService.PORT);
+            m_Listener.AllowNatTraversal(true);
             m_Listener.Start();
-            Debug.WriteLine($"Server has started on {IPAddress.Loopback}:{NetworkService.PORT}, Waiting for a connection…");
+            Debug.WriteLine($"Server has started on {IPAddress.Any}:{NetworkService.PORT}, Waiting for a connection…");
 
             // Blocking the NetworkThread until a Client connects.
             m_TcpClient = await m_Listener.AcceptTcpClientAsync();
@@ -227,7 +229,7 @@ namespace Battleship_v2.Networking
             // Set the PeerConnected flag to true
             PeerConnected = true;
             // Reload the CommandManager, to activate the Play Button immediately.
-            CommandManager.InvalidateRequerySuggested();
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => CommandManager.InvalidateRequerySuggested()));
         }
 
         public override void Stop()

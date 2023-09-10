@@ -43,7 +43,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="{Binding BackgroundColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="*"/>
