@@ -113,6 +113,7 @@
     <Compile Include="Ships\Ship.cs" />
     <Compile Include="Services\TileService.cs" />
     <Compile Include="Networking\WebSocketServer.cs" />
+    <Compile Include="ViewModels\AudioControlViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameOverViewModel.cs" />
     <Compile Include="ViewModels\HostMenuViewModel.cs" />
@@ -126,6 +127,9 @@
     <Compile Include="ViewModels\SingleplayerSetupViewModel.cs" />
     <Compile Include="ViewModels\TargetInputViewModel.cs" />
     <Compile Include="ViewModels\WinnerViewModel.cs" />
+    <Compile Include="Views\AudioControlView.xaml.cs">
+      <DependentUpon>AudioControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GameOverView.xaml.cs">
       <DependentUpon>GameOverView.xaml</DependentUpon>
     </Compile>
@@ -174,6 +178,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AudioControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GameOverView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

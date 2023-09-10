@@ -39,11 +39,15 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <DockPanel
+    <Grid>
+        <local:AudioControlView Panel.ZIndex="1" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+        <DockPanel
         LastChildFill="True">
-        <ContentControl
+            <ContentControl
             x:Name="Pages"
             DockPanel.Dock="Right"
             Content="{Binding SelectedViewModel}" />
-    </DockPanel>
+        </DockPanel>
+    </Grid>
 </UserControl>
