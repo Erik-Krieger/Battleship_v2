@@ -4,6 +4,7 @@ using Battleship_v2.Ships;
 using Battleship_v2.Utility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Controls;
 
@@ -351,10 +352,10 @@ namespace Battleship_v2.Services
         /// Generates a List of all the ships of this grid and places them.
         /// </summary>
         /// <returns></returns>
-        public List<Ship> GenerateShipList(List<ushort> theShipList = null)
+        public ObservableCollection<Ship> GenerateShipList(List<ushort> theShipList = null)
         {
             // Create a list of all the ships, that will be on this grid.
-            var aList = new List<Ship>()
+            var aList = new ObservableCollection<Ship>()
             {
                 new Carrier(),
                 new Battleship(),
@@ -393,7 +394,7 @@ namespace Battleship_v2.Services
         /// The input list will be modified.
         /// </summary>
         /// <param name="theShipList"></param>
-        private void placeShipsRandomly(List<Ship> theShipList)
+        private void placeShipsRandomly(ObservableCollection<Ship> theShipList)
         {
             Random aRng = new Random(m_RandomSeed++);
             Position aPos = new Position();
@@ -430,7 +431,7 @@ namespace Battleship_v2.Services
         /// <param name="theShip"></param>
         /// <param name="theShipList"></param>
         /// <returns></returns>
-        private bool isColliding(Ship theShip, List<Ship> theShipList)
+        private bool isColliding(Ship theShip, ObservableCollection<Ship> theShipList)
         {
             foreach (Ship aShip in theShipList)
             {

@@ -4,6 +4,7 @@ using Battleship_v2.Ships;
 using Battleship_v2.Utility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,7 @@ namespace Battleship_v2.ViewModels
         }
         private DataGridCellInfo m_CurrentCell;
 
-        public List<Ship> Ships
+        public ObservableCollection<Ship> Ships
         {
             get => m_Ships;
             set
@@ -68,7 +69,7 @@ namespace Battleship_v2.ViewModels
                 NotifyPropertyChanged(nameof(Ships));
             }
         }
-        private List<Ship> m_Ships;
+        private ObservableCollection<Ship> m_Ships;
 
         public PlayingFieldViewModel(PlayerType theOwner, List<ushort> theShipList)
         {

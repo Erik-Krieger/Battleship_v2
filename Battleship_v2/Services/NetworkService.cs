@@ -2,6 +2,7 @@
 using Battleship_v2.Ships;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -102,7 +103,7 @@ namespace Battleship_v2.Services
             NetworkPeer.Stop();
         }
 
-        public static string ConvertShipListToStringRep(List<Ship> theShipList)
+        public static string ConvertShipListToStringRep(ObservableCollection<Ship> theShipList)
         {
             string aStringRep = string.Empty;
 

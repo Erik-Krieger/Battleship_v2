@@ -272,30 +272,13 @@ namespace Battleship_v2.Ships
             setShipCells();
         }
 
+        /// <summary>
+        /// Returns a String representation of the object
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            /*string o = m_Orientation == Orientation.Horizontal ? "H" : "V";
-            string s = $"{Tile}-({Location.ToString()})-{o}-{m_Reversed.ToString()}";
-
-            m_Cells.ForEach((c) => { s += '-' + c.ToString(); });
-
-            return s;*/
-
-            switch (m_Type)
-            {
-                case ShipType.Carrier:
-                    return "Carrier";
-                case ShipType.Battleship:
-                    return "Battleship";
-                case ShipType.Submarine:
-                    return "Submarine";
-                case ShipType.Destroyer:
-                    return "Destroyer";
-                case ShipType.PatrolBoat:
-                    return "PatrolBoat";
-                default:
-                    return "No type specified.";
-            }
+            return Enum.GetName(typeof(ShipType), m_Type);
         }
     }
 }

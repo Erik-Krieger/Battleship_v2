@@ -21,6 +21,8 @@ namespace Battleship_v2.Models
         // therefore creating this race condition.
         private int m_RandomSeed = (int)DateTime.UtcNow.Ticks;
 
+        private bool[,] m_CellsHit = new bool[GRID_SIZE, GRID_SIZE];
+
         public PlayingFieldViewModel ViewModel { get; private set; }
 
         // This keeps track, if the Grid is owned by the player or the opponent.
@@ -70,6 +72,13 @@ namespace Battleship_v2.Models
             {
                 return;
             }
+
+            if (m_CellsHit[theXPos, theYPos] == true && theValue == TileService.GetTile(TileType.Miss))
+            {
+                return;
+            }
+
+            m_CellsHit[theXPos, theYPos] = true;
 
             // We need to increment here, since Column zero contains the row number
             // and when we say theXPos = 0, we refer to the first column of the playing field.
@@ -145,14 +154,12 @@ namespace Battleship_v2.Models
 
             if (!isSunk) return;
 
-            var aTempList = ViewModel.Ships;
-            aTempList.Remove(theShip);
-            ViewModel.Ships = null;
-            ViewModel.Ships = aTempList;
+            ViewModel.Ships.Remove(theShip);
 
             // This is just here to prove a point.
             if (ViewModel.Ships.Count == 0)
-            {
+            {   
+                // Display the Won or lost screen depending on whose turn it currently is.
                 WindowManagerService.Instance.NavigationViewModel.SelectedViewModel = new GameOverViewModel(GameManagerService.Instance.YourTurn);
             }
         }
