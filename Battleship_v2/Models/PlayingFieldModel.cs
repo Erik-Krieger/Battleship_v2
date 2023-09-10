@@ -150,9 +150,9 @@ namespace Battleship_v2.Models
         /// <param name="theShip"></param>
         public void DrawShip(Ship theShip, bool isSunk = true)
         {
-            foreach (var aCell in theShip.Cells)
+            for (int anIdx = 0; anIdx < theShip.Length; anIdx++)
             {
-                SetCell(aCell, theShip.TileSprite);
+                SetCell(theShip.Cells[anIdx], theShip.TileSet[anIdx]);
             }
 
             if (!isSunk) return;

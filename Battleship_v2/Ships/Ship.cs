@@ -28,8 +28,8 @@ namespace Battleship_v2.Ships
     {
         protected private ShipType m_Type = ShipType.None;
 
-        private Orientation m_Orientation = Orientation.Horizontal;
-        private bool m_Reversed = false;
+        protected private Orientation m_Orientation = Orientation.Horizontal;
+        public bool Reversed { get; protected private set; } = false;
 
         public List<Position> Cells { get => m_Cells; private set => m_Cells = value; }
         private List<Position> m_Cells;
@@ -49,14 +49,15 @@ namespace Battleship_v2.Ships
         public Position Location { get => m_Position; set => m_Position = value; }
         private Position m_Position = new Position();
 
+        public List<byte[]> TileSet { get; protected set; }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="theLetterRepresenation"></param>
         /// <param name="theLength"></param>
-        public Ship(byte[] theTile, int theLength)
+        public Ship(int theLength)
         {
-            m_TileSprite = theTile;
             m_Length = theLength;
             Cells = new List<Position>(m_Length);
 
@@ -76,7 +77,7 @@ namespace Battleship_v2.Ships
         {
             Location.SetValuesFrom(thePosition);
             m_Orientation = theOrientation;
-            m_Reversed = isReversed;
+            Reversed = isReversed;
 
             // Set the cells of the ship.
             setShipCells();
@@ -100,10 +101,15 @@ namespace Battleship_v2.Ships
                     Cells[anIdx].Y = Location.Y + anIdx;
                 }
             }
+
+            // Set the Ship Textures here
+            setTileSet();
         }
 
+        protected private abstract void setTileSet();
+
         /// <summary>
-        /// 
+        /// Validatesk, if the ships position is legal
         /// </summary>
         /// <param name="theXPos"></param>
         /// <param name="theYPos"></param>
@@ -227,7 +233,7 @@ namespace Battleship_v2.Ships
             }
 
             // If the Ship is reversed, set bit 11 to 1.
-            if (m_Reversed)
+            if (Reversed)
             {
                 aBitField |= (1 << 4);
             }
@@ -266,7 +272,7 @@ namespace Battleship_v2.Ships
             m_Orientation = ((aBitField >> 5) & 0b1) == 1 ? Orientation.Vertical : Orientation.Horizontal;
 
             // Extract bit 11 into m_Reversed.
-            m_Reversed = ((aBitField >> 4) & 0b1) == 1;
+            Reversed = ((aBitField >> 4) & 0b1) == 1;
 
             // Initialize the Ships grid cells.
             setShipCells();

@@ -52,11 +52,12 @@ namespace Battleship_v2.Utility
         private static string pathToDestroyer = "../../Resources/dev_art/gray_d.png";
         private static string pathToPatrolBoat = "../../Resources/dev_art/gray_p.png";
 
-        private static List<Tile> m_TileBuffer = new List<Tile>(20);
+        private static List<Tile> m_TileCache = new List<Tile>(20);
 
         public static byte[] GetTile(TileType theType, TileOrientation theOrientation = TileOrientation.Up)
         {
-            foreach (Tile aTile in m_TileBuffer)
+            // Check if that Tile already exists.
+            foreach (Tile aTile in m_TileCache)
             {
                 if (aTile.Type == theType && aTile.Orientation == theOrientation)
                 {
@@ -64,8 +65,10 @@ namespace Battleship_v2.Utility
                 }
             }
 
+            // Declare an empty path.
             string aPath;
 
+            // Determine the Type of Tile
             switch (theType)
             {
                 case TileType.Water:
@@ -96,12 +99,36 @@ namespace Battleship_v2.Utility
                     throw new InvalidDataException("The Tile type was invalid");
             }
 
+            // Load the Image from File.
             Image anImage = Bitmap.FromFile(aPath);
+
+            // Roate the Image
+            switch (theOrientation)
+            {
+                case TileOrientation.Up:
+                    break;
+                case TileOrientation.Right:
+                    anImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    break;
+                case TileOrientation.Down:
+                    anImage.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    break;
+                case TileOrientation.Left:
+                    anImage.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    break;
+                default:
+                    throw new InvalidDataException("The Tile Orientation was wrong");
+            }
+
+            // Create a new MemoryStream
             MemoryStream aMemoryStream = new MemoryStream();
+            // Write the Image into the MemoryBuffer
             anImage.Save(aMemoryStream, ImageFormat.Png);
+            // Convert the MemoryBuffer to a byte array.
             byte[] aByteArray = aMemoryStream.ToArray();
 
-            m_TileBuffer.Add(new Tile
+            // Add the new Tile to the Tile Buffer.
+            m_TileCache.Add(new Tile
             {
                 Type = theType,
                 Orientation = theOrientation,

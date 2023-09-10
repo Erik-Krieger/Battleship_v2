@@ -11,9 +11,36 @@ namespace Battleship_v2.Ships
     {
         const int LENGTH = 2;
 
-        public PatrolBoat() : base(TileService.GetTile(TileType.PatrolBoat), LENGTH)
+        public PatrolBoat() : base(LENGTH)
         {
             m_Type = ShipType.PatrolBoat;
+        }
+
+        protected private override void setTileSet()
+        {
+            TileSet = new List<byte[]>(LENGTH);
+
+            TileOrientation anOrientation = IsHorizontal() ? TileOrientation.Left : TileOrientation.Up;
+
+            if (Reversed)
+            {
+                if (anOrientation == TileOrientation.Left)
+                {
+                    anOrientation = TileOrientation.Right;
+                }
+                else if (anOrientation == TileOrientation.Up)
+                {
+                    anOrientation = TileOrientation.Down;
+                }
+            }
+
+            TileSet.Add(TileService.GetTile(TileType.PatrolBoat, anOrientation));
+            TileSet.Add(TileService.GetTile(TileType.PatrolBoat, anOrientation));
+
+            if (Reversed)
+            {
+                TileSet.Reverse();
+            }
         }
     }
 }
